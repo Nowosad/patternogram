@@ -1,3 +1,18 @@
+#' Title
+#'
+#' @param x
+#' @param cutoff
+#' @param width
+#' @param dist_fun
+#' @param sample_size
+#' @param approach
+#' @param cloud
+#' @param ...
+#'
+#' @return
+#' @export
+#'
+#' @examples
 patternogram = function(x, cutoff, width = cutoff/15, dist_fun = "euclidean", sample_size = 100, approach, cloud = FALSE, ...){
   sample_points = create_sample_points(x = x, sample_size = sample_size,
                                        approach = approach, ...)
