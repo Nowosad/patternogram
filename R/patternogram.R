@@ -30,7 +30,7 @@ patternogram = function(x, cutoff, width = cutoff/15, dist_fun = "euclidean", sa
 }
 
 get_cutoff = function(x){
-  cutoff = sqrt(expanse(as.polygons(ext(x), crs = crs(x))) / 1000000)
+  cutoff = sqrt(terra::expanse(terra::as.polygons(terra::ext(x), crs = terra::crs(x))) / 1000000)
   return(cutoff)
 }
 
@@ -59,10 +59,10 @@ calculate_distances = function(x, dist_fun){
                                   mute.message = TRUE)
   rownames(x_vdist) = gsub("v", "", rownames(x_vdist))
   colnames(x_vdist) = gsub("v", "", colnames(x_vdist))
-  x_vdist = as.dist(x_vdist)
+  x_vdist = stats::as.dist(x_vdist)
 
   # dist
-  x_dist = as.dist(sf::st_distance(x))
+  x_dist = stats::as.dist(sf::st_distance(x))
 
   # tidy
   x_vdist = broom::tidy(x_vdist)
