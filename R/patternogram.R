@@ -5,7 +5,6 @@
 #' @param width
 #' @param dist_fun
 #' @param sample_size
-#' @param approach
 #' @param cloud
 #' @param ...
 #'
@@ -13,15 +12,12 @@
 #' @export
 #'
 #' @examples
-patternogram = function(x, cutoff, width = cutoff/15, dist_fun = "euclidean", sample_size = 100, approach, cloud = FALSE, ...){
-  sample_points = create_sample_points(x = x, sample_size = sample_size,
-                                       approach = approach, ...)
-  distances = calculate_distances(sample_points, dist_fun = dist_fun)
-  print(cutoff)
+patternogram = function(x, cutoff, width = cutoff/15, dist_fun = "euclidean", sample_size = 100, cloud = FALSE, ...){
+  sample_points = create_sample_points(x = x, sample_size = sample_size)
+  distances = calculate_distances(sample_points, dist_fun = dist_fun, ...)
   if (missing(cutoff)){
     cutoff = get_cutoff(x)
   }
-  print(cutoff)
   distances = subset(distances, dist_km <= cutoff)
   if (!cloud){
     distances = summarize_distances(distances, width = width, boundary = 0)
@@ -52,11 +48,11 @@ get_mean_brakes = function(x){
   return(br)
 }
 
-calculate_distances = function(x, dist_fun){
+calculate_distances = function(x, dist_fun, ...){
   # value dist
   x_df = sf::st_drop_geometry(x)
   x_vdist = philentropy::distance(x_df, method = dist_fun,
-                                  mute.message = TRUE)
+                                  mute.message = TRUE, ...)
   rownames(x_vdist) = gsub("v", "", rownames(x_vdist))
   colnames(x_vdist) = gsub("v", "", colnames(x_vdist))
   x_vdist = stats::as.dist(x_vdist)
@@ -82,23 +78,23 @@ create_sample_points_terra = function(x, sample_size = 200){
   return(raster_pattern)
 }
 
-create_sample_points_motif = function(x, sample_size, ...){
-  # type ="cove",window = 100,threshold = 0
-  raster_pattern = motif::lsp_signature(x, ...)
-  raster_pattern = motif::lsp_restructure(raster_pattern)
-  raster_pattern = motif::lsp_add_sf(raster_pattern)
-  suppressWarnings({raster_pattern = sf::st_centroid(raster_pattern)[-c(1, 2)]})
-  if (!missing(sample_size) && sample_size < nrow(raster_pattern)){
-    raster_pattern = raster_pattern[sample(seq_len(nrow(raster_pattern)), size = sample_size), ]
-  }
-  return(raster_pattern)
-}
+# create_sample_points_motif = function(x, sample_size, ...){
+#   # type ="cove",window = 100,threshold = 0
+#   raster_pattern = motif::lsp_signature(x, ...)
+#   raster_pattern = motif::lsp_restructure(raster_pattern)
+#   raster_pattern = motif::lsp_add_sf(raster_pattern)
+#   suppressWarnings({raster_pattern = sf::st_centroid(raster_pattern)[-c(1, 2)]})
+#   if (!missing(sample_size) && sample_size < nrow(raster_pattern)){
+#     raster_pattern = raster_pattern[sample(seq_len(nrow(raster_pattern)), size = sample_size), ]
+#   }
+#   return(raster_pattern)
+# }
 
-create_sample_points = function(x, sample_size, approach, ...){
-  if (!missing(approach) && approach == "motif"){
-    raster_pattern = create_sample_points_motif(x = x, sample_size = sample_size, ...)
-  } else {
+create_sample_points = function(x, sample_size, ...){
+  # if (!missing(approach) && approach == "motif"){
+    # raster_pattern = create_sample_points_motif(x = x, sample_size = sample_size, ...)
+  # } else {
     raster_pattern = create_sample_points_terra(x = x, sample_size = sample_size)
-  }
+  # }
   return(raster_pattern)
 }

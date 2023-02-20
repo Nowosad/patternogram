@@ -18,5 +18,4 @@ Imports:
   sf, 
   terra
 Suggests:
-  ggplot2,
-  motif
+  ggplot2
