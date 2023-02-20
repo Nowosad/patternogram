@@ -3,7 +3,6 @@ library(terra)
 library(ggplot2)
 ta = rast(system.file("raster/ta_scaled.tif", package = "spquery"))
 plot(ta)
-# pr = rast(system.file("raster/pr_scaled.tif", package = "spquery"))
 my_dists = patternogram(ta, cloud = TRUE)
 
 ggplot(my_dists, aes(dist_km, distance)) +
