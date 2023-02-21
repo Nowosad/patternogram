@@ -12,16 +12,29 @@
 #' @export
 #'
 #' @examples
-patternogram = function(x, cutoff, width = cutoff/15, dist_fun = "euclidean", sample_size = 100, cloud = FALSE, ...){
-  sample_points = create_sample_points(x = x, sample_size = sample_size)
-  distances = calculate_distances(sample_points, dist_fun = dist_fun, ...)
+patternogram = function(x, cutoff, width = cutoff/15, dist_fun = "euclidean", sample_size = 100, cloud = FALSE, target = NULL, ...){
   if (missing(cutoff)){
     cutoff = get_cutoff(x)
   }
-  distances = subset(distances, dist_km <= cutoff)
-  if (!cloud){
-    distances = summarize_distances(distances, width = width, boundary = 0)
+  sample_points = create_sample_points(x = x, sample_size = sample_size)
+  if (!is.null(target)){
+    if (is.numeric(sample_points[[target]])){
+      sample_points[[target]] = cut(sample_points[[target]], ...)
+    }
+    sample_points = split(sample_points[setdiff(names(sample_points), target)],
+                          f = sample_points[[target]])
+  } else{
+    sample_points = list(sample_points)
   }
+  distances = lapply(sample_points, calculate_distances, dist_fun = dist_fun)
+  distances = lapply(distances, subset, dist_km <= cutoff)
+  if (!cloud){
+    distances = lapply(distances, summarize_distances, width = width, boundary = 0)
+  }
+  if (!is.null(target)){
+    distances = Map(cbind, distances, target = names(distances))
+  }
+  distances = do.call(rbind, distances)
   return(distances)
 }
 
