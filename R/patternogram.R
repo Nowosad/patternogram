@@ -27,7 +27,7 @@ patternogram = function(x, cutoff, width = cutoff/15, dist_fun = "euclidean", sa
     sample_points = list(sample_points)
   }
   distances = lapply(sample_points, calculate_distances, dist_fun = dist_fun)
-  distances = lapply(distances, subset, dist_km <= cutoff)
+  distances = lapply(distances, function(x) x[x$dist_km <= cutoff, ])
   if (!cloud){
     distances = lapply(distances, summarize_distances, width = width, boundary = 0)
   }
