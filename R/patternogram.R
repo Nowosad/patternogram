@@ -27,7 +27,7 @@ patternogram = function(x, cutoff, width = cutoff/15, dist_fun = "euclidean", sa
     sample_points = list(sample_points)
   }
   distances = lapply(sample_points, calculate_distances, dist_fun = dist_fun)
-  distances = lapply(distances, function(x) x[x$dist_km <= cutoff, ])
+  distances = lapply(distances, function(x) x[x$dist <= cutoff, ])
   if (!cloud){
     distances = lapply(distances, summarize_distances, width = width, boundary = 0)
   }
@@ -35,7 +35,7 @@ patternogram = function(x, cutoff, width = cutoff/15, dist_fun = "euclidean", sa
     distances = Map(cbind, distances, target = names(distances))
   }
   distances = do.call(rbind, distances)
-  return(distances)
+  return(structure(distances, class = c("patternogram", class(distances))))
 }
 
 get_cutoff = function(x){
@@ -45,11 +45,12 @@ get_cutoff = function(x){
 
 summarize_distances = function(x, width, center = NULL, boundary = NULL){
   y = x |>
-    dplyr::mutate(dist_km = ggplot2::cut_width(dist_km, width = width,
-                                                   center = center, boundary = boundary)) |>
-    dplyr::group_by(dist_km) |>
-    dplyr::summarise(distance = mean(distance), n = dplyr::n()) |>
-    dplyr::mutate(dist_km = get_mean_brakes(dist_km))
+    dplyr::mutate(dist = ggplot2::cut_width(dist, width = width,
+                                            center = center, boundary = boundary)) |>
+    dplyr::group_by(dist) |>
+    dplyr::summarise(dissimilarity = mean(distance), np = dplyr::n()) |>
+    dplyr::mutate(dist = get_mean_brakes(dist)) |>
+    dplyr::select(np, dist, dissimilarity)
   return(y)
 }
 
@@ -78,7 +79,7 @@ calculate_distances = function(x, dist_fun, ...){
   x_dist = broom::tidy(x_dist)
 
   x_dist$distance = x_dist$distance / 1000
-  names(x_dist)[3] = "dist_km"
+  names(x_dist)[3] = "dist"
 
   # join
   all_dists = dplyr::left_join(x_dist, x_vdist, by = c("item1", "item2"))

@@ -11,6 +11,7 @@ patternogram(
   dist_fun = "euclidean",
   sample_size = 100,
   cloud = FALSE,
+  target = NULL,
   ...
 )
 }
