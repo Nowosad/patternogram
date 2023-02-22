@@ -14,8 +14,7 @@ RoxygenNote: 7.2.3
 Imports: 
   broom,
   dplyr,
+  ggplot2,
   philentropy,
   sf, 
   terra
-Suggests:
-  ggplot2
