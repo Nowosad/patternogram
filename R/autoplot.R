@@ -1,9 +1,15 @@
 #' @export
 #' @importFrom ggplot2 autoplot
 autoplot.patternogram = function(plot_data, ...) {
-  ggplot(plot_data, aes(.data$dist, .data$dissimilarity)) +
-    geom_point() +
-    labs(x = "Distance", y = "Dissimilarity")
+  if ("target" %in% colnames(plot_data)){
+    ggplot(plot_data, aes(.data$dist, .data$dissimilarity, color = .data$target)) +
+      geom_point() +
+      labs(x = "Distance", y = "Dissimilarity", color = "Target")
+  } else {
+    ggplot(plot_data, aes(.data$dist, .data$dissimilarity)) +
+      geom_point() +
+      labs(x = "Distance", y = "Dissimilarity")
+  }
 }
 
 #' @export
