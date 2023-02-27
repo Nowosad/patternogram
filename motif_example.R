@@ -11,34 +11,27 @@ library(ggplot2)
 # read data ---------------------------------------------------------------
 predictors = rast("raw-data/predictors.tif")
 response = rast("raw-data/response.tif") |> setNames("response")
-response_cat = classify(response, rcl = c(-Inf, 0.2, 0.4, 0.6, 0.8, Inf))
 
 # create sample points ----------------------------------------------------
 set.seed(2023-02-21)
-# dane_reg = na.omit(st_as_sf(spatSample(c(response, predictors), size = 400, as.points = TRUE)))
-dane_cat = na.omit(st_as_sf(spatSample(c(response_cat, predictors), size = 400, as.points = TRUE)))
-dane_cat$response = as.factor(dane_cat$response)
+dane_reg = na.omit(st_as_sf(spatSample(c(response, predictors), size = 400, as.points = TRUE)))
+
 # regression --------------------------------------------------------------
 set.seed(2023-01-15)
-task = as_task_classif_st(x = dane_cat, target = "response")
-learner = lrn("classif.randomForest", importance = "gini")
+task = as_task_regr_st(x = dane_reg, target = "response")
+learner = lrn("regr.randomForest", importance = "mse")
 resampling = mlr3::rsmp("repeated_spcv_coords", folds = 5, repeats = 20) #100
 rr = mlr3::resample(task = task, learner = learner, resampling = resampling)
-miara1 = mlr3::mlr_measures$get("classif.acc")
-miara2 = mlr3::mlr_measures$get("classif.auc")
+miara1 = mlr3::mlr_measures$get("regr.mse")
+miara2 = mlr3::mlr_measures$get("regr.rmse")
 score_rr = rr$score(measures = c(miara1, miara2))
-median(score_rr$classif.acc)
+median(score_rr$regr.mse)
+median(score_rr$regr.rmse)
 learner$train(task)
 pred_cv = terra::predict(predictors, model = learner$model)
 plot(dane_reg["response"])
-plot(pred_cv)
-plot(response_cat)
-
-# testing motif
-library(motif)
-com = lsp_compare(pred_cv, response_cat, type = "cove", dist_fun = "jensen-shannon",
-                  window = 5, output = "sf")
-plot(com["dist"])
+terra::plot(pred_cv, range = c(0, 1))
+terra::plot(response, range = c(0, 1))
 
 # testing patternogram
 li = learner$importance()
@@ -48,12 +41,11 @@ predictors_scaled = scale(predictors)
 predictors_scaled2 = predictors_scaled * li2
 
 predictors3 = patternogram(predictors_scaled2, sample_size = 1000)
+plot(predictors3)
 
-ggplot(predictors3, aes(dist_km, distance)) +
-  geom_point()
+predictors4 = patternogram(c(response, predictors_scaled2),
+                           sample_size = 1000,
+                           target = "response",
+                           breaks = seq(0, 1, by = 0.2))
+plot(predictors4)
 
-predictors4 = patternogram(c(response_cat, predictors_scaled2), sample_size = 1000,
-                           target = "response")
-
-ggplot(predictors4, aes(dist_km, distance, color = target)) +
-  geom_point()
