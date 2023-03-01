@@ -40,7 +40,6 @@ A tibble with columns, such as (a) np - the number of point pairs in this estima
 ...
 }
 \examples{
-library(terra)
-r = rast(system.file("ex/elev.tif", package = "terra"))
+r = terra::rast(system.file("ex/elev.tif", package = "terra"))
 patternogram(r)
 }

@@ -17,8 +17,7 @@
 #'
 #' @importFrom rlang .data
 #' @examples
-#' library(terra)
-#' r = rast(system.file("ex/elev.tif", package = "terra"))
+#' r = terra::rast(system.file("ex/elev.tif", package = "terra"))
 #' patternogram(r)
 patternogram = function(x, cutoff, width = cutoff/15, dist_fun = "euclidean", sample_size = 100, cloud = FALSE, target = NULL, ...){
   if (missing(cutoff)){
