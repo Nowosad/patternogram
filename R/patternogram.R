@@ -10,15 +10,17 @@
 #' @param sample_size Proportion of the cells inside of each region to be used in calculations. Value between 0 and 1. It is also possible to specify an integer larger than 1, in which case the specified number of cells of each region will be used in calculations.
 #' @param cloud Logical; if TRUE, calculate the patternogram cloud
 #' @param target Additional argument allowing to calculate separate estimates for different categories or ranges of values
-#' @param ... Additional arguments for `base::cut`
+#' @param ... Additional arguments for `base::cut()`
 #'
-#' @return A tibble with columns, such as (a) np - the number of point pairs in this estimate, (b) dist - the middle of the distance interval used for each estimate, (c) dissimilarity - the dissimilarity estimate, (d) (optional) target
+#' @return A tibble of the patternogram class with columns, such as (a) np - the number of point pairs in this estimate, (b) dist - the middle of the distance interval used for each estimate, (c) dissimilarity - the dissimilarity estimate, (d) (optional) target
 #' @export
 #'
 #' @importFrom rlang .data
 #' @examples
 #' r = terra::rast(system.file("ex/elev.tif", package = "terra"))
-#' patternogram(r)
+#' pr = patternogram(r)
+#' pr
+#' plot(pr)
 patternogram = function(x, cutoff, width = cutoff/15, dist_fun = "euclidean", sample_size = 100, cloud = FALSE, target = NULL, ...){
   if (missing(cutoff)){
     cutoff = get_cutoff(x)

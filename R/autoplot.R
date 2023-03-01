@@ -1,3 +1,8 @@
+#' Plot a patternogram
+#'
+#' @param plot_data An output of the `patternogram()` function
+#' @param ... Additional arguments to `autoplot()`
+#'
 #' @export
 #' @importFrom ggplot2 autoplot
 #' @importFrom rlang .data
@@ -12,7 +17,11 @@ autoplot.patternogram = function(plot_data, ...) {
       ggplot2::labs(x = "Distance", y = "Dissimilarity")
   }
 }
-
+#' Plot a patternogram
+#'
+#' @param x An output of the `patternogram()` function
+#' @param ... Additional arguments to `autoplot()`
+#'
 #' @export
 #' @importFrom graphics plot
 plot.patternogram = function(x, ...) {

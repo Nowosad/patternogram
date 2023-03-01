@@ -31,10 +31,10 @@ by default: a square root of the raster area}
 
 \item{target}{Additional argument allowing to calculate separate estimates for different categories or ranges of values}
 
-\item{...}{Additional arguments for \code{base::cut}}
+\item{...}{Additional arguments for \code{base::cut()}}
 }
 \value{
-A tibble with columns, such as (a) np - the number of point pairs in this estimate, (b) dist - the middle of the distance interval used for each estimate, (c) dissimilarity - the dissimilarity estimate, (d) (optional) target
+A tibble of the patternogram class with columns, such as (a) np - the number of point pairs in this estimate, (b) dist - the middle of the distance interval used for each estimate, (c) dissimilarity - the dissimilarity estimate, (d) (optional) target
 }
 \description{
 ...
