@@ -1,17 +1,25 @@
-#' Title
+#' Create a Patternogram or a Patternogram Cloud
 #'
-#' @param x
-#' @param cutoff
-#' @param width
-#' @param dist_fun
-#' @param sample_size
-#' @param cloud
-#' @param ...
+#' ...
 #'
-#' @return
+#' @param x An object of class SpatRaster (terra)
+#' @param cutoff Spatial distance up to which point pairs are included in patternogram estimates;
+#'   by default: a square root of the raster area
+#' @param width The width of subsequent distance intervals for which data point pairs are grouped for patternogram estimates
+#' @param dist_fun Distance measure used. This function uses the `philentropy::distance` function (run `philentropy::getDistMethods()` to find possible distance measures)
+#' @param sample_size Proportion of the cells inside of each region to be used in calculations. Value between 0 and 1. It is also possible to specify an integer larger than 1, in which case the specified number of cells of each region will be used in calculations.
+#' @param cloud Logical; if TRUE, calculate the patternogram cloud
+#' @param target Additional argument allowing to calculate separate estimates for different categories or ranges of values
+#' @param ... Additional arguments for `base::cut`
+#'
+#' @return A tibble with columns, such as (a) np - the number of point pairs in this estimate, (b) dist - the middle of the distance interval used for each estimate, (c) dissimilarity - the dissimilarity estimate, (d) (optional) target
 #' @export
 #'
+#' @importFrom rlang .data
 #' @examples
+#' library(terra)
+#' r = rast(system.file("ex/elev.tif", package = "terra"))
+#' patternogram(r)
 patternogram = function(x, cutoff, width = cutoff/15, dist_fun = "euclidean", sample_size = 100, cloud = FALSE, target = NULL, ...){
   if (missing(cutoff)){
     cutoff = get_cutoff(x)
@@ -45,12 +53,12 @@ get_cutoff = function(x){
 
 summarize_distances = function(x, width, center = NULL, boundary = NULL){
   y = x |>
-    dplyr::mutate(dist = ggplot2::cut_width(dist, width = width,
+    dplyr::mutate(dist = ggplot2::cut_width(.data$dist, width = width,
                                             center = center, boundary = boundary)) |>
-    dplyr::group_by(dist) |>
-    dplyr::summarise(dissimilarity = mean(distance), np = dplyr::n()) |>
-    dplyr::mutate(dist = get_mean_brakes(dist)) |>
-    dplyr::select(np, dist, dissimilarity)
+    dplyr::group_by(.data$dist) |>
+    dplyr::summarise(dissimilarity = mean(.data$distance), np = dplyr::n()) |>
+    dplyr::mutate(dist = get_mean_brakes(.data$dist)) |>
+    dplyr::select("np", "dist", "dissimilarity")
   return(y)
 }
 
@@ -86,7 +94,10 @@ calculate_distances = function(x, dist_fun, ...){
   return(all_dists)
 }
 
-create_sample_points_terra = function(x, sample_size = 200){
+create_sample_points_terra = function(x, sample_size){
+  if (sample_size <= 1){
+    sample_size = ceiling(terra::ncell(x) * sample_size)
+  }
   raster_pattern = terra::spatSample(x, size = sample_size, na.rm = TRUE, as.points = TRUE)
   raster_pattern = sf::st_as_sf(raster_pattern)
   return(raster_pattern)

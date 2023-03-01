@@ -1,14 +1,15 @@
 #' @export
 #' @importFrom ggplot2 autoplot
+#' @importFrom rlang .data
 autoplot.patternogram = function(plot_data, ...) {
   if ("target" %in% colnames(plot_data)){
-    ggplot(plot_data, aes(.data$dist, .data$dissimilarity, color = .data$target)) +
-      geom_point() +
-      labs(x = "Distance", y = "Dissimilarity", color = "Target")
+    ggplot2::ggplot(plot_data, ggplot2::aes(.data$dist, .data$dissimilarity, color = .data$target)) +
+      ggplot2::geom_point() +
+      ggplot2::labs(x = "Distance", y = "Dissimilarity", color = "Target")
   } else {
-    ggplot(plot_data, aes(.data$dist, .data$dissimilarity)) +
-      geom_point() +
-      labs(x = "Distance", y = "Dissimilarity")
+    ggplot2::ggplot(plot_data, ggplot2::aes(.data$dist, .data$dissimilarity)) +
+      ggplot2::geom_point() +
+      ggplot2::labs(x = "Distance", y = "Dissimilarity")
   }
 }
 

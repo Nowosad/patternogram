@@ -1,4 +1,5 @@
 #' @keywords internal
+#' @aliases patternogram-package
 "_PACKAGE"
 
 ## usethis namespace: start

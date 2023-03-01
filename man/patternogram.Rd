@@ -2,7 +2,7 @@
 % Please edit documentation in R/patternogram.R
 \name{patternogram}
 \alias{patternogram}
-\title{Title}
+\title{Create a Patternogram or a Patternogram Cloud}
 \usage{
 patternogram(
   x,
@@ -16,8 +16,31 @@ patternogram(
 )
 }
 \arguments{
-\item{...}{}
+\item{x}{An object of class SpatRaster (terra)}
+
+\item{cutoff}{Spatial distance up to which point pairs are included in patternogram estimates;
+by default: a square root of the raster area}
+
+\item{width}{The width of subsequent distance intervals for which data point pairs are grouped for patternogram estimates}
+
+\item{dist_fun}{Distance measure used. This function uses the \code{philentropy::distance} function (run \code{philentropy::getDistMethods()} to find possible distance measures)}
+
+\item{sample_size}{Proportion of the cells inside of each region to be used in calculations. Value between 0 and 1. It is also possible to specify an integer larger than 1, in which case the specified number of cells of each region will be used in calculations.}
+
+\item{cloud}{Logical; if TRUE, calculate the patternogram cloud}
+
+\item{target}{Additional argument allowing to calculate separate estimates for different categories or ranges of values}
+
+\item{...}{Additional arguments for \code{base::cut}}
+}
+\value{
+A tibble with columns, such as (a) np - the number of point pairs in this estimate, (b) dist - the middle of the distance interval used for each estimate, (c) dissimilarity - the dissimilarity estimate, (d) (optional) target
 }
 \description{
-Title
+...
+}
+\examples{
+library(terra)
+r = rast(system.file("ex/elev.tif", package = "terra"))
+patternogram(r)
 }

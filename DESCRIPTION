@@ -16,5 +16,6 @@ Imports:
   dplyr,
   ggplot2,
   philentropy,
+  rlang,
   sf, 
   terra

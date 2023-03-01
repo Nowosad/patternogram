@@ -2,8 +2,8 @@
 % Please edit documentation in R/patternogram-package.R
 \docType{package}
 \name{patternogram-package}
-\alias{patternogram}
 \alias{patternogram-package}
+\alias{_PACKAGE}
 \title{patternogram: What the Package Does (One Line, Title Case)}
 \description{
 What the package does (one paragraph).
