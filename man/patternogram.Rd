@@ -41,5 +41,7 @@ A tibble of the patternogram class with columns, such as (a) np - the number of 
 }
 \examples{
 r = terra::rast(system.file("ex/elev.tif", package = "terra"))
-patternogram(r)
+pr = patternogram(r)
+pr
+plot(pr)
 }

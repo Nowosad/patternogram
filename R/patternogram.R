@@ -57,7 +57,7 @@ summarize_distances = function(x, width, center = NULL, boundary = NULL){
     dplyr::mutate(dist = ggplot2::cut_width(.data$dist, width = width,
                                             center = center, boundary = boundary)) |>
     dplyr::group_by(.data$dist) |>
-    dplyr::summarise(dissimilarity = mean(.data$distance), np = dplyr::n()) |>
+    dplyr::summarise(dissimilarity = mean(.data$dissimilarity), np = dplyr::n()) |>
     dplyr::mutate(dist = get_mean_brakes(.data$dist)) |>
     dplyr::select("np", "dist", "dissimilarity")
   return(y)
@@ -92,6 +92,7 @@ calculate_distances = function(x, dist_fun, ...){
 
   # join
   all_dists = dplyr::left_join(x_dist, x_vdist, by = c("item1", "item2"))
+  names(all_dists) = c("left", "right", "dist", "dissimilarity")
   return(all_dists)
 }
 
