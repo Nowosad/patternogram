@@ -48,7 +48,7 @@ patternogram = function(x, cutoff, width = cutoff/15, dist_fun = "euclidean", sa
 }
 
 get_cutoff = function(x){
-  cutoff = sqrt(terra::expanse(terra::as.polygons(terra::ext(x), crs = terra::crs(x))) / 1000000)
+  cutoff = sqrt(terra::expanse(terra::as.polygons(terra::ext(x), crs = terra::crs(x))))
   return(cutoff)
 }
 
@@ -74,20 +74,20 @@ get_mean_brakes = function(x){
 calculate_distances = function(x, dist_fun, ...){
   # value dist
   x_df = sf::st_drop_geometry(x)
-  x_vdist = philentropy::distance(x_df, method = dist_fun,
-                                  mute.message = TRUE, ...)
+  x_vdist = philentropy::distance(x_df, method = dist_fun, mute.message = TRUE, ...)
   rownames(x_vdist) = gsub("v", "", rownames(x_vdist))
   colnames(x_vdist) = gsub("v", "", colnames(x_vdist))
   x_vdist = stats::as.dist(x_vdist)
 
   # dist
-  x_dist = stats::as.dist(sf::st_distance(x))
+  x_dist = sf::st_distance(x)
+  x_dist = stats::as.dist(x_dist)
 
   # tidy
   x_vdist = broom::tidy(x_vdist)
   x_dist = broom::tidy(x_dist)
 
-  x_dist$distance = x_dist$distance / 1000
+  x_dist$distance = x_dist$distance
   names(x_dist)[3] = "dist"
 
   # join
