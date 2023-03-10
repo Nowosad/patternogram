@@ -30,6 +30,8 @@ patternogram = function(x, cutoff, width = cutoff/15, dist_fun = "euclidean", sa
     sample_points = create_sample_points(x = x, sample_size = sample_size)
   } else if (inherits(x, "SpatVector")){
     sample_points = sf::st_as_sf(x)
+  } else if (inherits(x, "sf")){
+    sample_points = x
   }
 
   if (!is.null(target)){
