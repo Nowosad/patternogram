@@ -2,12 +2,12 @@
 #'
 #' ...
 #'
-#' @param x An object of class SpatRaster (terra)
+#' @param x A raster object of class SpatRaster (terra) or a vector object of class sf (sf)
 #' @param cutoff Spatial distance up to which point pairs are included in patternogram estimates;
 #'   by default: a square root of the raster area
 #' @param width The width of subsequent distance intervals for which data point pairs are grouped for patternogram estimates
 #' @param dist_fun Distance measure used. This function uses the `philentropy::distance` function (run `philentropy::getDistMethods()` to find possible distance measures)
-#' @param sample_size Proportion of the cells inside of each region to be used in calculations. Value between 0 and 1. It is also possible to specify an integer larger than 1, in which case the specified number of cells of each region will be used in calculations.
+#' @param sample_size Only used when `x` is raster. Proportion of the cells inside of each region to be used in calculations. Value between 0 and 1. It is also possible to specify an integer larger than 1, in which case the specified number of cells of each region will be used in calculations.
 #' @param cloud Logical; if TRUE, calculate the patternogram cloud
 #' @param target Additional argument allowing to calculate separate estimates for different categories or ranges of values
 #' @param ... Additional arguments for `base::cut()`
@@ -25,7 +25,13 @@ patternogram = function(x, cutoff, width = cutoff/15, dist_fun = "euclidean", sa
   if (missing(cutoff)){
     cutoff = get_cutoff(x)
   }
-  sample_points = create_sample_points(x = x, sample_size = sample_size)
+
+  if (inherits(x, "SpatRaster")){
+    sample_points = create_sample_points(x = x, sample_size = sample_size)
+  } else if (inherits(x, "SpatVector")){
+    sample_points = sf::st_as_sf(x)
+  }
+
   if (!is.null(target)){
     if (is.numeric(sample_points[[target]])){
       sample_points[[target]] = cut(sample_points[[target]], ...)
@@ -35,14 +41,18 @@ patternogram = function(x, cutoff, width = cutoff/15, dist_fun = "euclidean", sa
   } else{
     sample_points = list(sample_points)
   }
+
   distances = lapply(sample_points, calculate_distances, dist_fun = dist_fun)
   distances = lapply(distances, function(x) x[x$dist <= cutoff, ])
+
   if (!cloud){
     distances = lapply(distances, summarize_distances, width = width, boundary = 0)
   }
+
   if (!is.null(target)){
     distances = Map(cbind, distances, target = names(distances))
   }
+
   distances = do.call(rbind, distances)
   return(structure(distances, class = c("patternogram", class(distances))))
 }
