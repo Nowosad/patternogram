@@ -2,7 +2,7 @@
 #'
 #' ...
 #'
-#' @param x A raster object of class SpatRaster (terra) or a vector object of class sf (sf)
+#' @param x A raster object of class SpatRaster (terra) or a point vector object of class sf (sf)
 #' @param cutoff Spatial distance up to which point pairs are included in patternogram estimates;
 #'   by default: a square root of the raster area
 #' @param width The width of subsequent distance intervals for which data point pairs are grouped for patternogram estimates

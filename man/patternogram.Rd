@@ -16,7 +16,7 @@ patternogram(
 )
 }
 \arguments{
-\item{x}{A raster object of class SpatRaster (terra) or a vector object of class sf (sf)}
+\item{x}{A raster object of class SpatRaster (terra) or a point vector object of class sf (sf)}
 
 \item{cutoff}{Spatial distance up to which point pairs are included in patternogram estimates;
 by default: a square root of the raster area}
