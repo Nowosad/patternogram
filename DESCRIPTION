@@ -17,5 +17,9 @@ Imports:
   ggplot2,
   philentropy,
   rlang,
-  sf, 
+  sf,
   terra
+Suggests: 
+  testthat (>= 3.0.0),
+  lwgeom
+Config/testthat/edition: 3

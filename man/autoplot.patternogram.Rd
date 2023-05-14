@@ -4,10 +4,10 @@
 \alias{autoplot.patternogram}
 \title{Plot a patternogram}
 \usage{
-\method{autoplot}{patternogram}(plot_data, ...)
+\method{autoplot}{patternogram}(object, ...)
 }
 \arguments{
-\item{plot_data}{An output of the \code{patternogram()} function}
+\item{object}{An output of the \code{patternogram()} function}
 
 \item{...}{Additional arguments to \code{autoplot()}}
 }
