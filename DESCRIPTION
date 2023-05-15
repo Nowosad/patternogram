@@ -1,12 +1,12 @@
 Package: patternogram
-Title: What the Package Does (One Line, Title Case)
-Version: 0.0.0.9000
+Title: A Visualization of Spatial Autocorrelation
+Version: 0.0.1
 Authors@R: c(
     person(given = "Jakub", family = "Nowosad", 
     role = c("aut", "cre"),
     email = "nowosad.jakub@gmail.com", 
     comment = c(ORCID = "0000-0002-1057-3721")))
-Description: What the package does (one paragraph).
+Description: The patternogram represents the average dissimilarity between the set of values in the given locations as a function of spatial distances between them. It is allows to: detect spatial autocorrelation for many data structures; compare spatial autocorrelation of variables over time; explore spatial autocorrelations of predictors in spatial machine learning models; analyze spatial autocorrelation of categorical spatial patterns.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
@@ -20,7 +20,7 @@ Imports:
   sf,
   terra
 Suggests: 
-    testthat (>= 3.0.0),
-    lwgeom,
-    covr
+  testthat (>= 3.0.0),
+  lwgeom,
+  covr
 Config/testthat/edition: 3
