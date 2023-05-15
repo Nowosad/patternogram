@@ -40,6 +40,9 @@ devtools::install_github("Nowosad/patternogram")
 library(patternogram)
 library(terra)
 r = rast(system.file("ex/elev.tif", package = "terra"))
+plot(r)
+```
+```{r}
 pr = patternogram(r)
 pr
 plot(pr)
