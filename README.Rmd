@@ -21,7 +21,9 @@ knitr::opts_chunk$set(
 [![R-CMD-check](https://github.com/Nowosad/patternogram/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/Nowosad/patternogram/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-The goal of **patternogram** is to ...
+The goal of **patternogram** is to quantify the spatial autocorrelation of values from a set of points or a raster object. 
+It does this by calculating the dissimilarity between pairs of points at different distances, and then grouping these dissimilarity estimates into distance intervals to create a patternogram.
+The patternogram can be used to identify the spatial scale at which the pattern of the points or raster changes and to compare the patterns of different sets of points or rasters.
 
 ## Installation
 
@@ -33,3 +35,18 @@ devtools::install_github("Nowosad/patternogram")
 ```
 
 ## Example
+
+```{r}
+library(patternogram)
+library(terra)
+r = rast(system.file("ex/elev.tif", package = "terra"))
+pr = patternogram(r)
+pr
+plot(pr)
+```
+
+## Contibution
+
+Contributions to this package are welcome - let us know if you have any suggestions or spotted a bug.
+The preferred method of contribution is through a GitHub pull request.
+Feel also free to contact us by creating [an issue](https://github.com/Nowosad/patternogram/issues).
