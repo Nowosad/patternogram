@@ -37,7 +37,7 @@ by default: a square root of the raster area}
 A tibble of the patternogram class with columns, such as (a) np - the number of point pairs in this estimate, (b) dist - the middle of the distance interval used for each estimate, (c) dissimilarity - the dissimilarity estimate, (d) (optional) target
 }
 \description{
-...
+It creates a patternogram or a patternogram cloud. The function takes a raster object of class \code{SpatRaster} or a point vector object of class \code{sf} as input, and calculates the dissimilarity between values of pairs of points given the distances between them. The output of this function is a tibble of the patternogram class that can be visualized with the \code{patternogram::plot()} and \code{patternogram::autoplot()} functions.
 }
 \examples{
 r = terra::rast(system.file("ex/elev.tif", package = "terra"))
