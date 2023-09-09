@@ -36,7 +36,7 @@ devtools::install_github("Nowosad/patternogram")
 ``` r
 library(patternogram)
 library(terra)
-#> terra 1.7.29
+#> terra 1.7.44
 r = rast(system.file("ex/elev.tif", package = "terra"))
 plot(r)
 ```
@@ -49,25 +49,34 @@ pr
 #> # A tibble: 15 × 3
 #>       np  dist dissimilarity
 #>  * <int> <dbl>         <dbl>
-#>  1   106  2300          36.9
-#>  2   299  6895          52.4
-#>  3   509 11495          59.9
-#>  4   562 16100          67.9
-#>  5   587 20700          70.4
-#>  6   608 25300          73.6
-#>  7   522 29900          78.2
-#>  8   496 34500          84.5
-#>  9   389 39100         106. 
-#> 10   303 43700         123. 
-#> 11   243 48300         149. 
-#> 12   143 52900         169. 
-#> 13   101 57450         181. 
-#> 14    50 62000         199. 
-#> 15    15 66600         208.
+#>  1   105  2300          37.6
+#>  2   328  6895          54.0
+#>  3   474 11495          60.7
+#>  4   552 16100          66.5
+#>  5   583 20700          81.4
+#>  6   568 25300          76.8
+#>  7   526 29900          82.7
+#>  8   490 34500          95.2
+#>  9   405 39100         107. 
+#> 10   326 43700         126. 
+#> 11   234 48300         141. 
+#> 12   172 52900         152. 
+#> 13    81 57450         160. 
+#> 14    57 62000         164. 
+#> 15    28 66600         180.
 plot(pr)
 ```
 
 <img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
+
+## Documentation
+
+Take a look at a conference presentation:
+
+1.  Exploring spatial autocorrelation and variable importance in machine
+    learning models using patternograms, 2023-09-06, European Conference
+    of Ecological Modelling 2023, Leipzig -
+    [slides](https://jakubnowosad.com/ecem-2023)
 
 ## Contibution
 

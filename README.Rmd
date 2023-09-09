@@ -48,6 +48,12 @@ pr
 plot(pr)
 ```
 
+## Documentation
+
+Take a look at a conference presentation:
+
+1. Exploring spatial autocorrelation and variable importance in machine learning models using patternograms, 2023-09-06, European Conference of Ecological Modelling 2023, Leipzig - [slides](https://jakubnowosad.com/ecem-2023)
+
 ## Contibution
 
 Contributions to this package are welcome - let us know if you have any suggestions or spotted a bug.
