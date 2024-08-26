@@ -3,7 +3,6 @@
 \docType{package}
 \name{patternogram-package}
 \alias{patternogram-package}
-\alias{_PACKAGE}
 \title{patternogram: A Visualization of Spatial Autocorrelation}
 \description{
 The patternogram represents the average dissimilarity between the set of values in the given locations as a function of spatial distances between them. It is allows to: detect spatial autocorrelation for many data structures; compare spatial autocorrelation of variables over time; explore spatial autocorrelations of predictors in spatial machine learning models; analyze spatial autocorrelation of categorical spatial patterns.

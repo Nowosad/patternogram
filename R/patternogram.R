@@ -21,7 +21,7 @@
 #' pr = patternogram(r)
 #' pr
 #' plot(pr)
-patternogram = function(x, cutoff, width = cutoff/15, dist_fun = "euclidean", sample_size = 100, cloud = FALSE, target = NULL, ...){
+patternogram = function(x, cutoff, width = cutoff/15, dist_fun = "euclidean", sample_size = 500, cloud = FALSE, target = NULL, ...){
   if (missing(cutoff)){
     cutoff = get_cutoff(x)
   }
