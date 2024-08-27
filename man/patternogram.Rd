@@ -9,7 +9,7 @@ patternogram(
   cutoff,
   width = cutoff/15,
   dist_fun = "euclidean",
-  sample_size = 100,
+  sample_size = 500,
   cloud = FALSE,
   target = NULL,
   ...
