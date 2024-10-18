@@ -14,6 +14,7 @@ autoplot.patternogram = function(object, ...) {
   } else {
     ggplot2::ggplot(object, ggplot2::aes(.data$dist, .data$dissimilarity)) +
       ggplot2::geom_point() +
+      ggplot2::geom_ribbon(ggplot2::aes(ymin = ci_lower, ymax = ci_upper), alpha = 0.2) +
       ggplot2::labs(x = "Distance", y = "Dissimilarity")
   }
 }

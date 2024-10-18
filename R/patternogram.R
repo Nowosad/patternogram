@@ -40,7 +40,7 @@ patternogram = function(x, cutoff, width = cutoff/15, dist_fun = "euclidean", sa
     }
     sample_points = split(sample_points[setdiff(names(sample_points), target)],
                           f = sample_points[[target]])
-  } else{
+  } else {
     sample_points = list(sample_points)
   }
 
@@ -64,14 +64,32 @@ get_cutoff = function(x){
   return(cutoff)
 }
 
-summarize_distances = function(x, width, center = NULL, boundary = NULL){
+# summarize_distances = function(x, width, center = NULL, boundary = NULL){
+#   y = x |>
+#     dplyr::mutate(dist = ggplot2::cut_width(.data$dist, width = width,
+#                                             center = center, boundary = boundary)) |>
+#     dplyr::group_by(.data$dist) |>
+#     dplyr::summarise(dissimilarity = mean(.data$dissimilarity), np = dplyr::n()) |>
+#     dplyr::mutate(dist = get_mean_brakes(.data$dist)) |>
+#     dplyr::select("np", "dist", "dissimilarity")
+#   return(y)
+# }
+
+summarize_distances = function(x, width, center = NULL, boundary = NULL, n_bootstrap = 100, conf_level = 0.98) {
   y = x |>
-    dplyr::mutate(dist = ggplot2::cut_width(.data$dist, width = width,
-                                            center = center, boundary = boundary)) |>
+    dplyr::mutate(dist = ggplot2::cut_width(.data$dist, width = width, center = center, boundary = boundary)) |>
     dplyr::group_by(.data$dist) |>
-    dplyr::summarise(dissimilarity = mean(.data$dissimilarity), np = dplyr::n()) |>
-    dplyr::mutate(dist = get_mean_brakes(.data$dist)) |>
-    dplyr::select("np", "dist", "dissimilarity")
+    dplyr::summarise(
+      ci = list(calculate_ci(.data$dissimilarity, n_bootstrap, conf_level)),
+      dissimilarity = mean(.data$dissimilarity),
+      np = dplyr::n()
+    ) |>
+    dplyr::mutate(
+      dist = get_mean_brakes(.data$dist),
+      ci_lower = purrr::map_dbl(.data$ci, 1),
+      ci_upper = purrr::map_dbl(.data$ci, 2)
+    ) |>
+    dplyr::select("np", "dist", "dissimilarity", "ci_lower", "ci_upper")
   return(y)
 }
 
@@ -136,4 +154,14 @@ create_sample_points = function(x, sample_size, ...){
     raster_pattern = create_sample_points_terra(x = x, sample_size = sample_size)
   # }
   return(raster_pattern)
+}
+
+calculate_ci = function(dissimilarities, n_bootstrap = 100, conf_level = 0.95) {
+  bootstrap_samples = replicate(n_bootstrap, {
+    sample_dissimilarities = sample(dissimilarities, replace = TRUE)
+    mean(sample_dissimilarities)
+  })
+  ci_lower = quantile(bootstrap_samples, probs = (1 - conf_level) / 2)
+  ci_upper = quantile(bootstrap_samples, probs = 1 - (1 - conf_level) / 2)
+  return(c(ci_lower, ci_upper))
 }
