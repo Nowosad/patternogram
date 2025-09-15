@@ -5,9 +5,9 @@ pr
 plot(pr)
 
 
-system.time({pr2 = patternogram2(r, n_repeats = 100)})
+system.time({pr2 = patternogram2(r, sample_size = 0.5, n_repeats = 50)})
 names(pr2)[2] = "dissimilarity"
-plot(pr2)
+# plot(pr2)
 
 
 pr2$target = "A"
