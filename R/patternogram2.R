@@ -5,7 +5,6 @@ patternogram2 = function(x, cutoff, width = cutoff/15, dist_fun = "euclidean",
     cutoff = get_cutoff(x)
   }
 
-  # handle sf/vector input as before
   if (inherits(x, "SpatVector")){
     sample_points_base = sf::st_as_sf(x)
   } else if (inherits(x, "sf")){
@@ -16,7 +15,7 @@ patternogram2 = function(x, cutoff, width = cutoff/15, dist_fun = "euclidean",
 
   breaks = make_breaks(cutoff, width, boundary = 0)
 
-  # helper: one run of your pipeline
+  # helper: one run of the pipeline
   run_once = function(sample_points) {
     if (!is.null(target)){
       if (is.numeric(sample_points[[target]])){
@@ -76,7 +75,8 @@ patternogram2 = function(x, cutoff, width = cutoff/15, dist_fun = "euclidean",
       ci_lower = quantile(dissimilarity, probs = alpha_low, na.rm = TRUE),
       ci_upper = quantile(dissimilarity, probs = alpha_high, na.rm = TRUE),
       .groups = "drop"
-    )
+    ) |>
+    dplyr::rename(dissimilarity = mean_dissimilarity)
 
   return(structure(summarized, class = c("patternogram", class(summarized))))
 }
