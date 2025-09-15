@@ -40,5 +40,6 @@ plot(pr2) +
 # 4. Advanced options:
 # - Nested resampling: for each monte carlo, do a bootstrap
 # - Block bootstrap: Instead of sampling single pixels/points, sample spatial blocks/tiles (or supercells?)
-# - Modeling approach??
+# - Modeling approach?? (probably not)
 # 5. Technicalties: there needs to be a better mechanism for comparing patternograms ("targets")
+# 6. Technicalties 2: add an option of calculating patternograms per layers and per all data
