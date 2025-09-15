@@ -35,11 +35,10 @@ plot(pr2) +
 # notes
 # 1. There are two possible types of CI's: a bootstrap one (based on a single sample) or based on multiple samples (repeats).
 # 2. There are useful for different purposes.
-# 3. Spatial autocorrelation: both can be invalid if you ignore it. (?Use block bootstrap / spatially-structured resampling or model-based methods if spatial dependence is important.)
-# 4. Advanced options:
+# 3. Advanced options:
 # - Nested resampling: for each monte carlo, do a bootstrap
 # - Block bootstrap: Instead of sampling single pixels/points, sample spatial blocks/tiles (or supercells?)
 # - Modeling approach?? (probably not)
-# 5. Technicalties: there needs to be a better mechanism for comparing patternograms ("targets")
-# 6. Technicalties 2: add an option of calculating patternograms per layers and per all data
-# 7. Can one type of CI, inform something about the other one? E.g., if one is fairly stable, would we expect the same from the second one?
+# 4. Technicalties: there needs to be a better mechanism for comparing patternograms ("targets")
+# 5. Technicalties 2: add an option of calculating patternograms per layers and per all data
+# 6. Can one type of CI, inform something about the other one? E.g., if one is fairly stable, would we expect the same from the second one?
