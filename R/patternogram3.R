@@ -1,6 +1,7 @@
-patternogram2 = function(x, cutoff, width = cutoff/15, dist_fun = "euclidean",
-                         sample_size = 500, n_repeats = 100, cloud = FALSE,
-                         target = NULL, conf_level = 0.95, ...) {
+patternogram3 = function(x, cutoff, width = cutoff/15, dist_fun = "euclidean",
+                         sample_size = 500, cloud = FALSE,
+                         target = NULL, n_bootstrap = 100, n_repeats = 100,
+                         conf_level = 0.95, ...) {
   if (missing(cutoff)){
     cutoff = get_cutoff(x)
   }
@@ -13,35 +14,7 @@ patternogram2 = function(x, cutoff, width = cutoff/15, dist_fun = "euclidean",
     sample_points_base = NULL
   }
 
-  breaks = make_breaks(cutoff, width, boundary = 0)
-
-  # helper: one run of the pipeline
-  run_once = function(sample_points) {
-    if (!is.null(target)){
-      if (is.numeric(sample_points[[target]])){
-        sample_points[[target]] = cut(sample_points[[target]], ...)
-      }
-      sample_points = split(sample_points[setdiff(names(sample_points), target)],
-                            f = sample_points[[target]])
-    } else {
-      sample_points = list(sample_points)
-    }
-
-    distances = lapply(sample_points, calculate_distances, dist_fun = dist_fun)
-    distances = lapply(distances, function(x) x[x$dist <= cutoff, ])
-
-    if (!cloud){
-      distances = lapply(distances, summarize_distances2, width = width,
-                         boundary = 0, breaks = breaks)
-    }
-
-    if (!is.null(target)){
-      distances = Map(cbind, distances, target = names(distances))
-    }
-
-    distances = do.call(rbind, distances)
-    return(distances)
-  }
+  breaks = make_breaks(cutoff, width)
 
   # Monte Carlo: repeat sampling + summarisation
   results = vector("list", n_repeats)
@@ -51,7 +24,9 @@ patternogram2 = function(x, cutoff, width = cutoff/15, dist_fun = "euclidean",
     } else {
       sample_points = sample_points_base
     }
-    results[[r]] = run_once(sample_points)
+    results[[r]] = single_patternogram(sample_points, cutoff = cutoff, width = width,
+                                      dist_fun = dist_fun, cloud = cloud,
+                                      target = target, breaks = breaks, n_bootstrap = n_bootstrap, ...)
   }
 
   # combine results: assume each run has dist + dissimilarity (and maybe target)
@@ -72,13 +47,47 @@ patternogram2 = function(x, cutoff, width = cutoff/15, dist_fun = "euclidean",
     dplyr::group_by(dplyr::across(dplyr::any_of(c("dist", "target")))) |>
     dplyr::summarise(
       mean_dissimilarity = mean(dissimilarity, na.rm = TRUE),
-      ci_lower = quantile(dissimilarity, probs = alpha_low, na.rm = TRUE),
-      ci_upper = quantile(dissimilarity, probs = alpha_high, na.rm = TRUE),
+      ci_lower = mean(ci_lower, na.rm = TRUE),
+      ci_upper = mean(ci_upper, na.rm = TRUE),
+      ci_lower_mc = quantile(dissimilarity, probs = alpha_low, na.rm = TRUE),
+      ci_upper_mc = quantile(dissimilarity, probs = alpha_high, na.rm = TRUE),
       .groups = "drop"
     ) |>
     dplyr::rename(dissimilarity = mean_dissimilarity)
 
   return(structure(summarized, class = c("patternogram", class(summarized))))
+}
+
+single_patternogram = function(sample_points, cutoff, width = cutoff/15,
+                              dist_fun = "euclidean", cloud = FALSE,
+                              target = NULL, breaks = NULL,
+                              n_bootstrap, ...) {
+
+  if (!is.null(target)){
+    if (is.numeric(sample_points[[target]])){
+      sample_points[[target]] = cut(sample_points[[target]], ...)
+    }
+    sample_points = split(sample_points[setdiff(names(sample_points), target)],
+                          f = sample_points[[target]])
+  } else {
+    sample_points = list(sample_points)
+  }
+
+  distances = lapply(sample_points, calculate_distances, dist_fun = dist_fun)
+  distances = lapply(distances, function(x) x[x$dist <= cutoff, ])
+
+  if (!cloud){
+    distances = lapply(distances, summarize_distances2, width = width,
+                       n_bootstrap = n_bootstrap, conf_level = conf_level,
+                       boundary = 0, breaks = breaks)
+  }
+
+  if (!is.null(target)){
+    distances = Map(cbind, distances, target = names(distances))
+  }
+
+  distances = do.call(rbind, distances)
+  return(distances)
 }
 
 summarize_distances2 = function(x, width, center = NULL, boundary = NULL,

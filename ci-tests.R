@@ -42,3 +42,12 @@ plot(pr2) +
 # 4. Technicalties: there needs to be a better mechanism for comparing patternograms ("targets")
 # 5. Technicalties 2: add an option of calculating patternograms per layers and per all data
 # 6. Can one type of CI, inform something about the other one? E.g., if one is fairly stable, would we expect the same from the second one?
+# 7. Can both of the CI's be calculated at the same time? E.g., raster --> many sets of points, thus we can calculate the monte carlo approach, and then each of the monte carlo realizations will have a bootstrap CI. Can we average the bootstrap CI's across the monte carlo runs?
+library(ggplot2)
+
+ggplot(summarized, aes(x = dist, y = dissimilarity)) +
+  geom_point() +
+  geom_line() +
+  geom_ribbon(aes(ymin = ci_lower_mc, ymax = ci_upper_mc), alpha = 0.2, fill = "blue") +
+  geom_ribbon(aes(ymin = ci_lower, ymax = ci_upper), alpha = 0.3) +
+  theme_minimal()

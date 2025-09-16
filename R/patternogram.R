@@ -59,10 +59,7 @@ patternogram = function(x, cutoff, width = cutoff/15, dist_fun = "euclidean", sa
   return(structure(distances, class = c("patternogram", class(distances))))
 }
 
-get_cutoff = function(x){
-  cutoff = sqrt(terra::expanse(terra::as.polygons(terra::ext(x), crs = terra::crs(x))))
-  return(cutoff)
-}
+
 
 # summarize_distances = function(x, width, center = NULL, boundary = NULL){
 #   y = x |>
@@ -130,7 +127,8 @@ create_sample_points_terra = function(x, sample_size){
   if (sample_size <= 1){
     sample_size = ceiling(terra::ncell(x) * sample_size)
   }
-  raster_pattern = terra::spatSample(x, size = sample_size, na.rm = TRUE, as.points = TRUE)
+  raster_pattern = terra::spatSample(x, size = sample_size, method = "random",
+                                     na.rm = TRUE, as.points = TRUE)
   raster_pattern = sf::st_as_sf(raster_pattern)
   return(raster_pattern)
 }
