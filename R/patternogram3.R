@@ -89,33 +89,3 @@ single_patternogram = function(sample_points, cutoff, width = cutoff/15,
   distances = do.call(rbind, distances)
   return(distances)
 }
-
-summarize_distances2 = function(x, width, center = NULL, boundary = NULL,
-                                n_bootstrap = 100, conf_level = 0.98,
-                                breaks = NULL) {
-  if (!is.null(breaks)) {
-    y = x |>
-      dplyr::mutate(dist = cut(.data$dist, breaks = breaks, include.lowest = TRUE))
-  } else {
-    y = x |>
-      dplyr::mutate(dist = ggplot2::cut_width(.data$dist, width = width,
-                                              center = center, boundary = boundary))
-  }
-
-  y = y |>
-    dplyr::group_by(.data$dist) |>
-    dplyr::summarise(
-      ci = list(calculate_ci(.data$dissimilarity, n_bootstrap, conf_level)),
-      dissimilarity = mean(.data$dissimilarity, na.rm = TRUE),
-      np = dplyr::n(),
-      .groups = "drop"
-    ) |>
-    dplyr::mutate(
-      dist = get_mean_brakes(.data$dist),
-      ci_lower = purrr::map_dbl(.data$ci, ~ .x[1]),
-      ci_upper = purrr::map_dbl(.data$ci, ~ .x[2])
-    ) |>
-    dplyr::select("np", "dist", "dissimilarity", "ci_lower", "ci_upper")
-
-  return(y)
-}
