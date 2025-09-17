@@ -43,6 +43,8 @@ plot(pr2) +
 # 5. Technicalties 2: add an option of calculating patternograms per layers and per all data
 # 6. Can one type of CI, inform something about the other one? E.g., if one is fairly stable, would we expect the same from the second one?
 # 7. Can both of the CI's be calculated at the same time? E.g., raster --> many sets of points, thus we can calculate the monte carlo approach, and then each of the monte carlo realizations will have a bootstrap CI. Can we average the bootstrap CI's across the monte carlo runs?
+# 8. If the sample size given is smaller than the provided number of points -- should the monte carlo be run then?
+# 9. Parallel??
 library(ggplot2)
 
 ggplot(summarized, aes(x = dist, y = dissimilarity)) +

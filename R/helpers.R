@@ -9,18 +9,6 @@ make_breaks = function(cutoff, width) {
   seq(0, cutoff, by = width)
 }
 
-# calculate confidence intervals using bootstrap
-calculate_ci = function(dissimilarities, n_bootstrap = 100, conf_level = 0.95) {
-  bootstrap_samples = replicate(n_bootstrap, {
-    sample_dissimilarities = sample(dissimilarities, replace = TRUE)
-    mean(sample_dissimilarities)
-  })
-  ci_lower = quantile(bootstrap_samples, probs = (1 - conf_level) / 2)
-  ci_upper = quantile(bootstrap_samples, probs = 1 - (1 - conf_level) / 2)
-  return(c(ci_lower, ci_upper))
-}
-
-
 create_sample_points_terra = function(x, sample_size){
   if (sample_size <= 1){
     sample_size = ceiling(terra::ncell(x) * sample_size)
@@ -85,7 +73,6 @@ calculate_distances = function(x, dist_fun, ...){
   return(all_dists)
 }
 
-
 # summarize_distances = function(x, width, center = NULL, boundary = NULL){
 #   y = x |>
 #     dplyr::mutate(dist = ggplot2::cut_width(.data$dist, width = width,
@@ -115,9 +102,20 @@ calculate_distances = function(x, dist_fun, ...){
 #   return(y)
 # }
 
+# calculate confidence intervals using bootstrap
+calculate_ci = function(dissimilarities, n_bootstrap = 100, conf_level = 0.95) {
+  bootstrap_samples = replicate(n_bootstrap, {
+    sample_dissimilarities = sample(dissimilarities, replace = TRUE)
+    mean(sample_dissimilarities)
+  })
+  ci_lower = quantile(bootstrap_samples, probs = (1 - conf_level) / 2)
+  ci_upper = quantile(bootstrap_samples, probs = 1 - (1 - conf_level) / 2)
+  return(c(ci_lower, ci_upper))
+}
+
 summarize_distances = function(x, width, center = NULL, boundary = NULL,
-                                n_bootstrap = 100, conf_level = 0.98,
-                                breaks = NULL) {
+                               n_bootstrap = 100, conf_level = 0.98,
+                               breaks = NULL) {
   if (!is.null(breaks)) {
     y = x |>
       dplyr::mutate(dist = cut(.data$dist, breaks = breaks, include.lowest = TRUE))
@@ -127,23 +125,34 @@ summarize_distances = function(x, width, center = NULL, boundary = NULL,
                                               center = center, boundary = boundary))
   }
 
-  y = y |>
-    dplyr::group_by(.data$dist) |>
-    dplyr::summarise(
-      ci = list(calculate_ci(.data$dissimilarity, n_bootstrap, conf_level)),
-      dissimilarity = mean(.data$dissimilarity, na.rm = TRUE),
-      np = dplyr::n(),
-      .groups = "drop"
-    ) |>
-    dplyr::mutate(
-      dist = get_mean_brakes(.data$dist),
-      ci_lower = purrr::map_dbl(.data$ci, ~ .x[1]),
-      ci_upper = purrr::map_dbl(.data$ci, ~ .x[2])
-    ) |>
-    dplyr::select("np", "dist", "dissimilarity", "ci_lower", "ci_upper")
+  if (missing(n_bootstrap) || n_bootstrap <=1){
+    y = y |>
+      dplyr::group_by(.data$dist) |>
+      dplyr::summarise(
+        dissimilarity = mean(.data$dissimilarity, na.rm = TRUE),
+        np = dplyr::n(),
+        .groups = "drop"
+      ) |>
+      dplyr::mutate(
+        dist = get_mean_brakes(.data$dist)
+      ) |>
+      dplyr::select("np", "dist", "dissimilarity")
+  } else {
+    y = y |>
+      dplyr::group_by(.data$dist) |>
+      dplyr::summarise(
+        ci = list(calculate_ci(.data$dissimilarity, n_bootstrap, conf_level)),
+        dissimilarity = mean(.data$dissimilarity, na.rm = TRUE),
+        np = dplyr::n(),
+        .groups = "drop"
+      ) |>
+      dplyr::mutate(
+        dist = get_mean_brakes(.data$dist),
+        ci_lower = purrr::map_dbl(.data$ci, ~ .x[1]),
+        ci_upper = purrr::map_dbl(.data$ci, ~ .x[2])
+      ) |>
+      dplyr::select("np", "dist", "dissimilarity", "ci_lower", "ci_upper")
+  }
 
   return(y)
 }
-
-
-
