@@ -10,13 +10,20 @@ make_breaks = function(cutoff, width) {
 }
 
 create_sample_points_terra = function(x, sample_size){
-  if (sample_size <= 1){
-    sample_size = ceiling(terra::ncell(x) * sample_size)
+  if (inherits(x, "SpatRaster")){
+    if (sample_size <= 1){
+      sample_size = ceiling(terra::ncell(x) * sample_size)
+    }
+    selected_points = terra::spatSample(x, size = sample_size, method = "random",
+                                       na.rm = TRUE, as.points = TRUE)
+    selected_points = sf::st_as_sf(selected_points)
+  } else if (inherits(x, "sf")){
+    if (sample_size <= 1){
+      sample_size = ceiling(nrow(x) * sample_size)
+    }
+    selected_points = x[sample(seq_len(nrow(x)), size = sample_size), ]
   }
-  raster_pattern = terra::spatSample(x, size = sample_size, method = "random",
-                                     na.rm = TRUE, as.points = TRUE)
-  raster_pattern = sf::st_as_sf(raster_pattern)
-  return(raster_pattern)
+  return(selected_points)
 }
 
 # create_sample_points_motif = function(x, sample_size, ...){

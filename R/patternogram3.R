@@ -35,7 +35,7 @@ patternogram3 = function(x, cutoff, width = cutoff/15, dist_fun = "euclidean",
     if (inherits(x, "SpatRaster")){
       sample_points = create_sample_points(x = x, sample_size = sample_size)
     } else {
-      sample_points = sample_points_base
+      sample_points = create_sample_points(x = sample_points_base, sample_size = sample_size)
     }
     result = single_patternogram(sample_points, cutoff = cutoff, width = width,
                         dist_fun = dist_fun, cloud = cloud,
@@ -47,7 +47,7 @@ patternogram3 = function(x, cutoff, width = cutoff/15, dist_fun = "euclidean",
       if (inherits(x, "SpatRaster")){
         sample_points = create_sample_points(x = x, sample_size = sample_size)
       } else {
-        sample_points = sample_points_base
+        sample_points = create_sample_points(x = sample_points_base, sample_size = sample_size)
       }
       results[[r]] = single_patternogram(sample_points, cutoff = cutoff, width = width,
                                          dist_fun = dist_fun, cloud = cloud,
@@ -80,7 +80,7 @@ patternogram3 = function(x, cutoff, width = cutoff/15, dist_fun = "euclidean",
       ) |>
       dplyr::rename(dissimilarity = mean_dissimilarity)
   }
-  return(structure(result, class = c("patternogram", class(summarized))))
+  return(structure(result, class = c("patternogram", class(result))))
 }
 
 single_patternogram = function(sample_points, cutoff, width = cutoff/15,
