@@ -41,6 +41,8 @@ patternogram3 = function(x, cutoff, width = cutoff/15, dist_fun = "euclidean",
                         dist_fun = dist_fun, cloud = cloud,
                         group = group, breaks = breaks, n_bootstrap = n_bootstrap,
                         conf_level = conf_level, ...)
+  } else if (cloud){
+    stop("Monte Carlo uncertainty estimation not implemented for patternogram clouds.", call. = FALSE)
   } else {
     # Monte Carlo: repeat sampling + summarization
     results = vector("list", n_montecarlo)
@@ -71,7 +73,7 @@ patternogram3 = function(x, cutoff, width = cutoff/15, dist_fun = "euclidean",
                                  fill = list(np = 0, dissimilarity = NA))
     }
 
-    # summarise across repeats: mean dissimilarity & CI per bin
+    # summarize across repeats: mean dissimilarity & CI per bin
     alpha_low = (1 - conf_level) / 2
     alpha_high = 1 - alpha_low
 
