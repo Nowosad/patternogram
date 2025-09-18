@@ -1,6 +1,35 @@
+#' Create a Patternogram or a Patternogram Cloud
+#'
+#' It creates a patternogram or a patternogram cloud. The function takes a raster object of class `SpatRaster` or a point vector object of class `sf` as input, and calculates the dissimilarity between values of pairs of points given the distances between them. The output of this function is a tibble of the patternogram class that can be visualized with the `plot()` and `autoplot()` functions.
+#'
+#' @param x A raster object of class SpatRaster (terra) or a point vector object of class sf (sf)
+#' @param cutoff Spatial distance up to which point pairs are included in patternogram estimates.
+#'   By default: a square root of the raster/point data area
+#' @param width The width of subsequent distance intervals for which data point pairs are grouped for patternogram estimates. By default: cutoff/15
+#' @param dist_fun Distance measure used. This function uses the `philentropy::distance()` function (run `philentropy::getDistMethods()` to find possible distance measures). By default: "euclidean"
+#' @param sample_size Only used when `x` is raster. Proportion of the cells/points to be used in calculations. Value between 0 and 1. It is also possible to specify an integer larger than 1, in which case the specified number of cells/points will be used in calculations by random sampling. By default: 500
+#' @param cloud Logical; if TRUE, return the patternogram cloud
+#' @param group Optional; name of a column in the point attribute table to calculate separate patternograms for different categories or ranges of a numeric variable. If the specified column is numeric, it will be converted to a factor using the `base::cut()` function. By default: NULL
+#' @param interval Type of interval to be calculated. Options are "none" (default), "confidence" (confidence intervals around the mean dissimilarity estimate), and "uncertainty" (uncertainty intervals around the dissimilarity estimates). The confidence intervals are calculated using a bootstrap approach, while the uncertainty intervals are calculated using a Monte Carlo approach. Note that uncertainty intervals require more computations than confidence intervals. Also, confidence intervals are only available when `cloud = FALSE`.
+#' @param interval_opts A list of options for interval calculations. Possible options are (a) `conf_level`: confidence level for intervals (default: 0.95), (b) `n_bootstrap`: number of bootstrap samples for confidence intervals (default: 100), and (c) `n_montecarlo`: number of Monte Carlo repetitions for uncertainty intervals (default: 100)
+#' @param ... Additional arguments for `base::cut()`
+#'
+#' @return A tibble of the patternogram class with columns (a) np: the number of point pairs in this estimate, (b) dist: the middle of the distance interval used for each estimate, (c) dissimilarity: the dissimilarity estimate.
+#' Additionally, if `interval = "confidence"`, the tibble contains columns (d) ci_lower: lower confidence interval, and (e) ci_upper: upper confidence interval. If `interval = "uncertainty"`, the tibble contains columns (d) ui_lower: lower uncertainty interval, and (e) ui_upper: upper uncertainty interval.
+#' If `group` is specified, the tibble also contains a column (f) group: the group category.
+#'
+#' @export
+#'
+#' @importFrom rlang .data
+#' @examples
+#' r = terra::rast(system.file("ex/elev.tif", package = "terra"))
+#' pr = patternogram(r)
+#' pr
+#' plot(pr)
 patternogram3 = function(x, cutoff, width = cutoff/15, dist_fun = "euclidean",
-                         sample_size = 500, cloud = FALSE,
+                         sample_size = 500,
                          group = NULL,
+                         cloud = FALSE,
                          interval = c("none", "confidence", "uncertainty"),
                          interval_opts = list(conf_level = 0.95,
                                               n_bootstrap = 100,
