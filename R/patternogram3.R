@@ -39,10 +39,12 @@ patternogram3 = function(x, cutoff, width = cutoff/15, dist_fun = "euclidean",
     }
     result = single_patternogram(sample_points, cutoff = cutoff, width = width,
                         dist_fun = dist_fun, cloud = cloud,
-                        group = group, breaks = breaks, n_bootstrap = n_bootstrap, ...)
+                        group = group, breaks = breaks, n_bootstrap = n_bootstrap,
+                        conf_level = conf_level, ...)
   } else {
     # Monte Carlo: repeat sampling + summarization
     results = vector("list", n_montecarlo)
+    set.seed(202512)
     for (r in seq_len(n_montecarlo)) {
       if (inherits(x, "SpatRaster")){
         sample_points = create_sample_points(x = x, sample_size = sample_size)
@@ -51,7 +53,8 @@ patternogram3 = function(x, cutoff, width = cutoff/15, dist_fun = "euclidean",
       }
       results[[r]] = single_patternogram(sample_points, cutoff = cutoff, width = width,
                                          dist_fun = dist_fun, cloud = cloud,
-                                         group = group, breaks = breaks, n_bootstrap = n_bootstrap, ...)
+                                         group = group, breaks = breaks, n_bootstrap = n_bootstrap,
+                                         conf_level = conf_level, ...)
     }
 
     # combine results: assume each run has dist + dissimilarity (and maybe group)
@@ -60,9 +63,13 @@ patternogram3 = function(x, cutoff, width = cutoff/15, dist_fun = "euclidean",
     # make sure all bins exist in every repeat
     all_bins = unique(combined$dist)
 
-    combined = combined |>
-      tidyr::complete(repeat_id, dist = all_bins,
-                      fill = list(dissimilarity = NA))
+    if (is.null(group)){
+      combined = tidyr::complete(combined, repeat_id, dist = all_bins,
+                                 fill = list(np = 0, dissimilarity = NA))
+    } else {
+      combined = tidyr::complete(combined, repeat_id, dist = all_bins, group = unique(combined$group),
+                                 fill = list(np = 0, dissimilarity = NA))
+    }
 
     # summarise across repeats: mean dissimilarity & CI per bin
     alpha_low = (1 - conf_level) / 2
@@ -71,6 +78,7 @@ patternogram3 = function(x, cutoff, width = cutoff/15, dist_fun = "euclidean",
     result = combined |>
       dplyr::group_by(dplyr::across(dplyr::any_of(c("dist", "group")))) |>
       dplyr::summarise(
+        mean_np = as.integer(ceiling(mean(np, na.rm = TRUE))),
         mean_dissimilarity = mean(dissimilarity, na.rm = TRUE),
         # ci_lower = mean(ci_lower, na.rm = TRUE),
         # ci_upper = mean(ci_upper, na.rm = TRUE),
@@ -78,7 +86,8 @@ patternogram3 = function(x, cutoff, width = cutoff/15, dist_fun = "euclidean",
         ui_upper = quantile(dissimilarity, probs = alpha_high, na.rm = TRUE),
         .groups = "drop"
       ) |>
-      dplyr::rename(dissimilarity = mean_dissimilarity)
+      dplyr::select(np = mean_np, dist, dissimilarity = mean_dissimilarity,
+                    ui_lower, ui_upper, dplyr::any_of("group"))
   }
   return(structure(result, class = c("patternogram", class(result))))
 }
@@ -86,7 +95,7 @@ patternogram3 = function(x, cutoff, width = cutoff/15, dist_fun = "euclidean",
 single_patternogram = function(sample_points, cutoff, width = cutoff/15,
                                dist_fun = "euclidean", cloud = FALSE,
                                group = NULL, breaks = NULL,
-                               n_bootstrap, ...) {
+                               n_bootstrap, conf_level, ...) {
 
   if (!is.null(group)){
     if (is.numeric(sample_points[[group]])){

@@ -22,6 +22,7 @@ create_sample_points_terra = function(x, sample_size){
       sample_size = ceiling(nrow(x) * sample_size)
     }
     selected_points = x[sample(seq_len(nrow(x)), size = sample_size), ]
+    rownames(selected_points) = NULL
   }
   return(selected_points)
 }
@@ -121,7 +122,7 @@ calculate_ci = function(dissimilarities, n_bootstrap = 100, conf_level = 0.95) {
 }
 
 summarize_distances = function(x, width, center = NULL, boundary = NULL,
-                               n_bootstrap = 100, conf_level = 0.98,
+                               n_bootstrap = 100, conf_level = 0.95,
                                breaks = NULL) {
   if (!is.null(breaks)) {
     y = x |>
