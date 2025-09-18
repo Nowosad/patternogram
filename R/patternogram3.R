@@ -95,10 +95,10 @@ patternogram3 = function(x, cutoff, width = cutoff/15, dist_fun = "euclidean",
     all_bins = unique(combined$dist)
 
     if (is.null(group)){
-      combined = tidyr::complete(combined, repeat_id, dist = all_bins,
+      combined = tidyr::complete(combined, .data$repeat_id, dist = all_bins,
                                  fill = list(np = 0, dissimilarity = NA))
     } else {
-      combined = tidyr::complete(combined, repeat_id, dist = all_bins, group = unique(combined$group),
+      combined = tidyr::complete(combined, .data$repeat_id, dist = all_bins, group = unique(combined$group),
                                  fill = list(np = 0, dissimilarity = NA))
     }
 
@@ -109,16 +109,16 @@ patternogram3 = function(x, cutoff, width = cutoff/15, dist_fun = "euclidean",
     result = combined |>
       dplyr::group_by(dplyr::across(dplyr::any_of(c("group", "dist")))) |>
       dplyr::summarise(
-        mean_np = as.integer(ceiling(mean(np, na.rm = TRUE))),
-        mean_dissimilarity = mean(dissimilarity, na.rm = TRUE),
+        mean_np = as.integer(ceiling(mean(.data$np, na.rm = TRUE))),
+        mean_dissimilarity = mean(.data$dissimilarity, na.rm = TRUE),
         # ci_lower = mean(ci_lower, na.rm = TRUE),
         # ci_upper = mean(ci_upper, na.rm = TRUE),
-        ui_lower = quantile(dissimilarity, probs = alpha_low, na.rm = TRUE),
-        ui_upper = quantile(dissimilarity, probs = alpha_high, na.rm = TRUE),
+        ui_lower = stats::quantile(.data$dissimilarity, probs = alpha_low, na.rm = TRUE),
+        ui_upper = stats::quantile(.data$dissimilarity, probs = alpha_high, na.rm = TRUE),
         .groups = "drop"
       ) |>
-      dplyr::select(np = mean_np, dist, dissimilarity = mean_dissimilarity,
-                    ui_lower, ui_upper, dplyr::any_of("group"))
+      dplyr::select(np = "mean_np", "dist", dissimilarity = "mean_dissimilarity",
+                    "ui_lower", "ui_upper", dplyr::any_of("group"))
   }
   rownames(result) = NULL
   return(structure(result, class = c("patternogram", class(result))))

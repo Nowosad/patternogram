@@ -115,8 +115,8 @@ calculate_ci = function(dissimilarities, n_bootstrap = 100, conf_level = 0.95) {
     sample_dissimilarities = sample(dissimilarities, replace = TRUE)
     mean(sample_dissimilarities)
   })
-  ci_lower = quantile(bootstrap_samples, probs = (1 - conf_level) / 2)
-  ci_upper = quantile(bootstrap_samples, probs = 1 - (1 - conf_level) / 2)
+  ci_lower = stats::quantile(bootstrap_samples, probs = (1 - conf_level) / 2)
+  ci_upper = stats::quantile(bootstrap_samples, probs = 1 - (1 - conf_level) / 2)
   return(c(ci_lower, ci_upper))
 }
 
