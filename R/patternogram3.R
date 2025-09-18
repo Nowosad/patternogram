@@ -76,7 +76,7 @@ patternogram3 = function(x, cutoff, width = cutoff/15, dist_fun = "euclidean",
     alpha_high = 1 - alpha_low
 
     result = combined |>
-      dplyr::group_by(dplyr::across(dplyr::any_of(c("dist", "group")))) |>
+      dplyr::group_by(dplyr::across(dplyr::any_of(c("group", "dist")))) |>
       dplyr::summarise(
         mean_np = as.integer(ceiling(mean(np, na.rm = TRUE))),
         mean_dissimilarity = mean(dissimilarity, na.rm = TRUE),
@@ -89,6 +89,7 @@ patternogram3 = function(x, cutoff, width = cutoff/15, dist_fun = "euclidean",
       dplyr::select(np = mean_np, dist, dissimilarity = mean_dissimilarity,
                     ui_lower, ui_upper, dplyr::any_of("group"))
   }
+  rownames(result) = NULL
   return(structure(result, class = c("patternogram", class(result))))
 }
 

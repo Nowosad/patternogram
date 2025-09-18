@@ -22,7 +22,6 @@ create_sample_points_terra = function(x, sample_size){
       sample_size = ceiling(nrow(x) * sample_size)
     }
     selected_points = x[sample(seq_len(nrow(x)), size = sample_size), ]
-    rownames(selected_points) = NULL
   }
   return(selected_points)
 }
