@@ -13,11 +13,13 @@ autoplot.patternogram = function(object, ...) {
     gg = ggplot2::ggplot(object, ggplot2::aes(.data$dist, .data$dissimilarity,
                                               color = .data$group, fill = .data$group)) +
       ggplot2::geom_point() +
-      ggplot2::labs(x = "Distance", y = "Dissimilarity", color = "Group", fill = "Group")
+      ggplot2::labs(x = "Distance", y = "Dissimilarity", color = "Group", fill = "Group") +
+      ggplot2::scale_x_continuous(limits = c(0, NA))
   } else {
     gg = ggplot2::ggplot(object, ggplot2::aes(.data$dist, .data$dissimilarity)) +
       ggplot2::geom_point() +
-      ggplot2::labs(x = "Distance", y = "Dissimilarity")
+      ggplot2::labs(x = "Distance", y = "Dissimilarity") +
+      ggplot2::scale_x_continuous(limits = c(0, NA))
   }
   if (has_ci) {
     gg = gg +
