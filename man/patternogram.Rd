@@ -7,34 +7,46 @@
 patternogram(
   x,
   cutoff,
-  width = cutoff/15,
+  breaks = 15,
   dist_fun = "euclidean",
   sample_size = 500,
+  group = NULL,
   cloud = FALSE,
-  target = NULL,
+  interval = c("none", "confidence", "uncertainty"),
+  interval_opts = list(conf_level = 0.95, n_bootstrap = 100, n_montecarlo = 100),
   ...
 )
 }
 \arguments{
 \item{x}{A raster object of class SpatRaster (terra) or a point vector object of class sf (sf)}
 
-\item{cutoff}{Spatial distance up to which point pairs are included in patternogram estimates;
-by default: a square root of the raster area}
+\item{cutoff}{Spatial distance up to which point pairs are included in patternogram estimates.
+By default: a square root of the raster/point data area}
 
-\item{width}{The width of subsequent distance intervals for which data point pairs are grouped for patternogram estimates}
+\item{breaks}{Either the number of distance intervals (breaks) to be used in calculations, or a numeric vector specifying the break points. If a single number is provided, it specifies the number of intervals, and the function will create equally spaced intervals from 0 to \code{cutoff}. By default: 15}
 
-\item{dist_fun}{Distance measure used. This function uses the \code{philentropy::distance()} function (run \code{philentropy::getDistMethods()} to find possible distance measures)}
+\item{dist_fun}{Distance measure used. This function uses the \code{philentropy::distance()} function (run \code{philentropy::getDistMethods()} to find possible distance measures). By default: "euclidean"}
 
-\item{sample_size}{Only used when \code{x} is raster. Proportion of the cells inside of each region to be used in calculations. Value between 0 and 1. It is also possible to specify an integer larger than 1, in which case the specified number of cells of each region will be used in calculations.}
+\item{sample_size}{Only used when \code{x} is raster. Proportion of the cells/points to be used in calculations. Value between 0 and 1. It is also possible to specify an integer larger than 1, in which case the specified number of cells/points will be used in calculations by random sampling. By default: 500}
 
-\item{cloud}{Logical; if TRUE, calculate the patternogram cloud}
+\item{group}{Optional; name of a column in the point attribute table to calculate separate patternograms for different categories or ranges of a numeric variable. If the specified column is numeric, it will be converted to a factor using the \code{base::cut()} function. By default: NULL}
 
-\item{target}{Additional argument allowing to calculate separate estimates for different categories or ranges of values}
+\item{cloud}{Logical; if TRUE, return the patternogram cloud}
 
-\item{...}{Additional arguments for \code{base::cut()}}
+\item{interval}{Type of interval to be calculated. Options are "none" (default), "confidence" (confidence intervals around the mean dissimilarity estimate), and "uncertainty" (uncertainty intervals around the dissimilarity estimates). The confidence intervals are calculated using a bootstrap approach, while the uncertainty intervals are calculated using a Monte Carlo approach. Note that uncertainty intervals require more computations than confidence intervals. Also, confidence intervals are only available when \code{cloud = FALSE}.}
+
+\item{interval_opts}{A list of options for interval calculations. Possible options are (a) \code{conf_level}: confidence level for intervals (default: 0.95), (b) \code{n_bootstrap}: number of bootstrap samples for confidence intervals (default: 100), and (c) \code{n_montecarlo}: number of Monte Carlo repetitions for uncertainty intervals (default: 100)}
+
+\item{...}{Not used}
 }
 \value{
-A tibble of the patternogram class with columns, such as (a) np - the number of point pairs in this estimate, (b) dist - the middle of the distance interval used for each estimate, (c) dissimilarity - the dissimilarity estimate, (d) (optional) target
+A tibble of the patternogram class with columns (a) np: the number of point pairs in this estimate, (b) dist: the middle of the distance interval used for each estimate, (c) dissimilarity: the dissimilarity estimate.
+Additionally, if \code{interval = "confidence"}, the tibble contains columns (d) ci_lower: lower confidence interval, and (e) ci_upper: upper confidence interval. If \code{interval = "uncertainty"}, the tibble contains columns (d) ui_lower: lower uncertainty interval, and (e) ui_upper: upper uncertainty interval.
+If \code{group} is specified, the tibble also contains a column (f) group: the group category.
+Also note, that if \code{interval = "uncertainty"}, the np is the mean number of point pairs across Monte Carlo repetitions, and the dissimilarity is the mean dissimilarity across Monte Carlo repetitions.
+
+If \code{cloud = TRUE}, the outcome is a tibble of the patternogram class with columns (a) left: ID of the first point in the pair, (b) right: ID of the second point in the pair, (c) dist: the spatial distance between the points in the pair, and (d) dissimilarity: the dissimilarity between the values of the points in the pair.
+If \code{group} is specified, the tibble also contains a column (e) group: the group category.
 }
 \description{
 It creates a patternogram or a patternogram cloud. The function takes a raster object of class \code{SpatRaster} or a point vector object of class \code{sf} as input, and calculates the dissimilarity between values of pairs of points given the distances between them. The output of this function is a tibble of the patternogram class that can be visualized with the \code{plot()} and \code{autoplot()} functions.
