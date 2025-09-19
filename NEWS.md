@@ -1,3 +1,7 @@
+# patternogram 0.1.1
+
+* Adds parallalization possibility when calculating uncertainty intervals
+
 # patternogram 0.1.0
 
 * Allows to calculate two types of confidence intervals for patternograms

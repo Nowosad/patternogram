@@ -77,23 +77,47 @@ patternogram = function(x, cutoff, breaks = 15, dist_fun = "euclidean",
                         group = group, n_bootstrap = n_bootstrap,
                         conf_level = conf_level, ...)
   } else if (cloud){
-    stop("Monte Carlo uncertainty estimation not implemented for patternogram clouds.", call. = FALSE)
+    stop("Monte Carlo uncertainty estimation not implemented for patternogram clouds.",
+         call. = FALSE)
   } else {
     # Monte Carlo: repeat sampling + summarization
-    results = vector("list", n_montecarlo)
-    set.seed(202512)
-    for (r in seq_len(n_montecarlo)) {
-      if (inherits(x, "SpatRaster")){
-        sample_points = create_sample_points(x = x, sample_size = sample_size)
-      } else {
-        sample_points = create_sample_points(x = sample_points_base, sample_size = sample_size)
-      }
-      results[[r]] = single_patternogram(sample_points, cutoff = cutoff, breaks = breaks,
-                                         dist_fun = dist_fun, cloud = cloud,
-                                         group = group, n_bootstrap = n_bootstrap,
-                                         conf_level = conf_level, ...)
-    }
+    if (requireNamespace("future.apply", quietly = TRUE) &&
+        requireNamespace("future", quietly = TRUE) &&
+        !identical(future::plan("list"),
+                   list(list(strategy = "sequential")))) {
+      if (inherits(x, "SpatRaster")) x = terra::wrap(x)
+      results = future.apply::future_lapply(seq_len(n_montecarlo), function(r) {
+        if (inherits(x, "PackedSpatRaster")) {
+          sample_points = create_sample_points(x = terra::rast(x),
+                                               sample_size = sample_size)
+        } else {
+          sample_points = create_sample_points(x = sample_points_base,
+                                               sample_size = sample_size)
+        }
 
+        single_patternogram(sample_points, cutoff = cutoff, breaks = breaks,
+                            dist_fun = dist_fun, cloud = cloud,
+                            group = group, n_bootstrap = n_bootstrap,
+                            conf_level = conf_level, ...)
+      },
+      future.globals = c("single_patternogram", "create_sample_points"),
+      future.packages = c("terra", "patternogram"),
+      future.seed = TRUE)
+    } else {
+      results = vector("list", n_montecarlo)
+      for (r in seq_len(n_montecarlo)) {
+        if (inherits(x, "SpatRaster")){
+          sample_points = create_sample_points(x = x, sample_size = sample_size)
+        } else {
+          sample_points = create_sample_points(x = sample_points_base,
+                                               sample_size = sample_size)
+        }
+        results[[r]] = single_patternogram(sample_points, cutoff = cutoff, breaks = breaks,
+                                           dist_fun = dist_fun, cloud = cloud,
+                                           group = group, n_bootstrap = n_bootstrap,
+                                           conf_level = conf_level, ...)
+      }
+    }
     # combine results: assume each run has dist + dissimilarity (and maybe group)
     combined = dplyr::bind_rows(results, .id = "repeat_id")
 
@@ -104,7 +128,8 @@ patternogram = function(x, cutoff, breaks = 15, dist_fun = "euclidean",
       combined = tidyr::complete(combined, .data$repeat_id, dist = all_bins,
                                  fill = list(np = 0, dissimilarity = NA))
     } else {
-      combined = tidyr::complete(combined, .data$repeat_id, dist = all_bins, group = unique(combined$group),
+      combined = tidyr::complete(combined, .data$repeat_id, dist = all_bins,
+                                 group = unique(combined$group),
                                  fill = list(np = 0, dissimilarity = NA))
     }
 
@@ -128,35 +153,4 @@ patternogram = function(x, cutoff, breaks = 15, dist_fun = "euclidean",
   }
   rownames(result) = NULL
   return(structure(result, class = c("patternogram", class(result))))
-}
-
-single_patternogram = function(sample_points, cutoff, breaks,
-                               dist_fun = "euclidean", cloud = FALSE,
-                               group = NULL,
-                               n_bootstrap, conf_level, ...) {
-
-  if (!is.null(group)){
-    # if (is.numeric(sample_points[[group]])){
-    #   sample_points[[group]] = cut(sample_points[[group]], ...)
-    # }
-    sample_points = split(sample_points[setdiff(names(sample_points), group)],
-                          f = sample_points[[group]])
-  } else {
-    sample_points = list(sample_points)
-  }
-
-  distances = lapply(sample_points, calculate_distances, dist_fun = dist_fun)
-  distances = lapply(distances, function(x) x[x$dist <= cutoff, ])
-
-  if (!cloud){
-    distances = lapply(distances, summarize_distances, breaks = breaks,
-                       n_bootstrap = n_bootstrap, conf_level = conf_level)
-  }
-
-  if (!is.null(group)){
-    distances = Map(dplyr::bind_cols, distances, group = names(distances))
-  }
-
-  distances = do.call(rbind, distances)
-  return(distances)
 }
