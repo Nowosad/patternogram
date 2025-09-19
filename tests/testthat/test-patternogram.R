@@ -10,25 +10,28 @@ pts$values = rnorm(nrow(pts))
 
 # calculate various patternograms
 pr = patternogram(r, sample_size = 100)
-pp = patternogram(pts)
+pr2 = patternogram(r, sample_size = 1)
+pr_ci = patternogram(r, sample_size = 80, interval = "confidence")
+pr_ui = patternogram(r, sample_size = 80, interval = "uncertainty",
+                     interval_opts = list(n_montecarlo = 10))
+
+pp = patternogram(pts, sample_size = 100)
 pc = patternogram(pts, cloud = TRUE)
 pts2 = pts
 pts2$cat = cut(pts$values, breaks = c(-Inf, 0, Inf))
 pg = patternogram(pts2, group = "cat")
+pg_ui = patternogram(pts2, sample_size = 0.8, group = "cat",
+                     interval = "uncertainty",
+                     interval_opts = list(n_montecarlo = 10))
 
 # test patternogram with raster input
 test_that("patternogram with raster input returns a tibble with expected columns", {
   expect_true("patternogram" %in% class(pr))
   expect_true(all(c("np", "dist", "dissimilarity") %in% names(pr)))
   expect_true(nrow(pr) > 0)
+  expect_true(all(c("np", "dist", "dissimilarity", "ci_lower", "ci_upper") %in% names(pr_ci)))
+  expect_true(all(c("np", "dist", "dissimilarity", "ui_lower", "ui_upper") %in% names(pr_ui)))
 })
-
-# test_that("patternogram with raster input and confidence intervals returns a tibble with expected columns", {
-#   pr = patternogram(r, sample_size = 80, )
-#   expect_true("patternogram" %in% class(pr))
-#   expect_true(all(c("np", "dist", "dissimilarity", "lower", "upper") %in% names(pr)))
-#   expect_true(nrow(pr) > 0)
-# })
 
 # test patternogram with point vector input
 test_that("patternogram with point vector input returns a tibble with expected columns", {
@@ -37,10 +40,13 @@ test_that("patternogram with point vector input returns a tibble with expected c
   expect_true(nrow(pp) > 0)
 })
 
+test_that("the sample size argument works as expected", {
+  expect_identical(pr, pr2)
+})
 # test patternogram with cloud option
 test_that("patternogram with cloud option returns a tibble with expected columns", {
   expect_true("patternogram" %in% class(pc))
-  expect_true(all(c("dist", "dissimilarity") %in% names(pc)))
+  expect_true(all(c("left", "right", "dist", "dissimilarity") %in% names(pc)))
   expect_true(nrow(pc) > 0)
 })
 
@@ -49,11 +55,16 @@ test_that("patternogram structure is identical for SpatRaster and sf inputs", {
   expect_identical(nrow(pr), nrow(pp))
 })
 
-# test patternogram with target option
+# test patternogram with group option
 test_that("patternogram with target option returns a tibble with expected columns", {
   expect_true("patternogram" %in% class(pg))
   expect_true(all(c("np", "dist", "dissimilarity", "group") %in% names(pg)))
   expect_true(nrow(pg) > 0)
+  expect_true(all(c("np", "dist", "dissimilarity", "ui_lower", "ui_upper", "group") %in% names(pg_ui)))
+})
+
+test_that("patternogram cloud does not work with the uncertainty interval", {
+  expect_error(patternogram(r, cloud = TRUE, interval = "uncertainty"))
 })
 
 # test plot method
