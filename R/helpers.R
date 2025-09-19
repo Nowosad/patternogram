@@ -4,9 +4,12 @@ get_cutoff = function(x){
   return(cutoff)
 }
 
-make_breaks = function(cutoff, width) {
-  # generate cut breaks manually
-  seq(0, cutoff, by = width)
+make_breaks = function(cutoff, breaks) {
+  if (length(breaks) == 1) {
+    width = cutoff / breaks
+    breaks = seq(0, cutoff, by = width)
+  }
+  return(breaks)
 }
 
 create_sample_points_terra = function(x, sample_size){
@@ -20,6 +23,10 @@ create_sample_points_terra = function(x, sample_size){
   } else if (inherits(x, "sf")){
     if (sample_size <= 1){
       sample_size = ceiling(nrow(x) * sample_size)
+    } else if (sample_size > nrow(x)){
+      sample_size = nrow(x)
+      warning("The specified sample size is larger than number of points. Using all points.",
+              call. = FALSE)
     }
     selected_points = x[sample(seq_len(nrow(x)), size = sample_size), ]
   }
@@ -111,26 +118,23 @@ calculate_distances = function(x, dist_fun, ...){
 
 # calculate confidence intervals using bootstrap
 calculate_ci = function(dissimilarities, n_bootstrap = 100, conf_level = 0.95) {
-  bootstrap_samples = replicate(n_bootstrap, {
-    sample_dissimilarities = sample(dissimilarities, replace = TRUE)
-    mean(sample_dissimilarities)
-  })
-  ci_lower = stats::quantile(bootstrap_samples, probs = (1 - conf_level) / 2)
-  ci_upper = stats::quantile(bootstrap_samples, probs = 1 - (1 - conf_level) / 2)
-  return(c(ci_lower, ci_upper))
+  if (length(dissimilarities) <= 1){
+    return(c(NA, NA))
+  } else {
+    bootstrap_samples = replicate(n_bootstrap, {
+      sample_dissimilarities = sample(dissimilarities, replace = TRUE)
+      mean(sample_dissimilarities)
+    })
+    ci_lower = stats::quantile(bootstrap_samples, probs = (1 - conf_level) / 2)
+    ci_upper = stats::quantile(bootstrap_samples, probs = 1 - (1 - conf_level) / 2)
+    return(c(ci_lower, ci_upper))
+  }
 }
 
-summarize_distances = function(x, width, center = NULL, boundary = NULL,
-                               n_bootstrap = 100, conf_level = 0.95,
-                               breaks = NULL) {
-  if (!is.null(breaks)) {
-    y = x |>
-      dplyr::mutate(dist = cut(.data$dist, breaks = breaks, include.lowest = TRUE))
-  } else {
-    y = x |>
-      dplyr::mutate(dist = ggplot2::cut_width(.data$dist, width = width,
-                                              center = center, boundary = boundary))
-  }
+summarize_distances = function(x, breaks,
+                               n_bootstrap = 100, conf_level = 0.95) {
+  y = x |>
+    dplyr::mutate(dist = cut(.data$dist, breaks = breaks, include.lowest = TRUE))
 
   if (missing(n_bootstrap) || n_bootstrap <=1){
     y = y |>

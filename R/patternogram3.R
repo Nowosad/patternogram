@@ -5,7 +5,7 @@
 #' @param x A raster object of class SpatRaster (terra) or a point vector object of class sf (sf)
 #' @param cutoff Spatial distance up to which point pairs are included in patternogram estimates.
 #'   By default: a square root of the raster/point data area
-#' @param width The width of subsequent distance intervals for which data point pairs are grouped for patternogram estimates. By default: cutoff/15
+#' @param breaks Either the number of distance intervals (breaks) to be used in calculations, or a numeric vector specifying the break points. If a single number is provided, it specifies the number of intervals, and the function will create equally spaced intervals from 0 to `cutoff`. By default: 15
 #' @param dist_fun Distance measure used. This function uses the `philentropy::distance()` function (run `philentropy::getDistMethods()` to find possible distance measures). By default: "euclidean"
 #' @param sample_size Only used when `x` is raster. Proportion of the cells/points to be used in calculations. Value between 0 and 1. It is also possible to specify an integer larger than 1, in which case the specified number of cells/points will be used in calculations by random sampling. By default: 500
 #' @param cloud Logical; if TRUE, return the patternogram cloud
@@ -17,6 +17,10 @@
 #' @return A tibble of the patternogram class with columns (a) np: the number of point pairs in this estimate, (b) dist: the middle of the distance interval used for each estimate, (c) dissimilarity: the dissimilarity estimate.
 #' Additionally, if `interval = "confidence"`, the tibble contains columns (d) ci_lower: lower confidence interval, and (e) ci_upper: upper confidence interval. If `interval = "uncertainty"`, the tibble contains columns (d) ui_lower: lower uncertainty interval, and (e) ui_upper: upper uncertainty interval.
 #' If `group` is specified, the tibble also contains a column (f) group: the group category.
+#' Also note, that if `interval = "uncertainty"`, the np is the mean number of point pairs across Monte Carlo repetitions, and the dissimilarity is the mean dissimilarity across Monte Carlo repetitions.
+#'
+#' If `cloud = TRUE`, the outcome is a tibble of the patternogram class with columns (a) left: ID of the first point in the pair, (b) right: ID of the second point in the pair, (c) dist: the spatial distance between the points in the pair, and (d) dissimilarity: the dissimilarity between the values of the points in the pair.
+#' If `group` is specified, the tibble also contains a column (e) group: the group category.
 #'
 #' @export
 #'
@@ -26,7 +30,7 @@
 #' pr = patternogram(r)
 #' pr
 #' plot(pr)
-patternogram3 = function(x, cutoff, width = cutoff/15, dist_fun = "euclidean",
+patternogram = function(x, cutoff, breaks = 15, dist_fun = "euclidean",
                          sample_size = 500,
                          group = NULL,
                          cloud = FALSE,
@@ -58,17 +62,19 @@ patternogram3 = function(x, cutoff, width = cutoff/15, dist_fun = "euclidean",
     n_bootstrap = 1; n_montecarlo = 1
   }
 
-  breaks = make_breaks(cutoff, width)
+  breaks = make_breaks(cutoff, breaks)
 
   if (n_montecarlo == 1){
     if (inherits(x, "SpatRaster")){
-      sample_points = create_sample_points(x = x, sample_size = sample_size)
+      sample_points = create_sample_points(x = x,
+                                           sample_size = sample_size)
     } else {
-      sample_points = create_sample_points(x = sample_points_base, sample_size = sample_size)
+      sample_points = create_sample_points(x = sample_points_base,
+                                           sample_size = sample_size)
     }
-    result = single_patternogram(sample_points, cutoff = cutoff, width = width,
+    result = single_patternogram(sample_points, cutoff = cutoff, breaks = breaks,
                         dist_fun = dist_fun, cloud = cloud,
-                        group = group, breaks = breaks, n_bootstrap = n_bootstrap,
+                        group = group, n_bootstrap = n_bootstrap,
                         conf_level = conf_level, ...)
   } else if (cloud){
     stop("Monte Carlo uncertainty estimation not implemented for patternogram clouds.", call. = FALSE)
@@ -82,9 +88,9 @@ patternogram3 = function(x, cutoff, width = cutoff/15, dist_fun = "euclidean",
       } else {
         sample_points = create_sample_points(x = sample_points_base, sample_size = sample_size)
       }
-      results[[r]] = single_patternogram(sample_points, cutoff = cutoff, width = width,
+      results[[r]] = single_patternogram(sample_points, cutoff = cutoff, breaks = breaks,
                                          dist_fun = dist_fun, cloud = cloud,
-                                         group = group, breaks = breaks, n_bootstrap = n_bootstrap,
+                                         group = group, n_bootstrap = n_bootstrap,
                                          conf_level = conf_level, ...)
     }
 
@@ -124,9 +130,9 @@ patternogram3 = function(x, cutoff, width = cutoff/15, dist_fun = "euclidean",
   return(structure(result, class = c("patternogram", class(result))))
 }
 
-single_patternogram = function(sample_points, cutoff, width = cutoff/15,
+single_patternogram = function(sample_points, cutoff, breaks,
                                dist_fun = "euclidean", cloud = FALSE,
-                               group = NULL, breaks = NULL,
+                               group = NULL,
                                n_bootstrap, conf_level, ...) {
 
   if (!is.null(group)){
@@ -143,13 +149,12 @@ single_patternogram = function(sample_points, cutoff, width = cutoff/15,
   distances = lapply(distances, function(x) x[x$dist <= cutoff, ])
 
   if (!cloud){
-    distances = lapply(distances, summarize_distances, width = width,
-                       n_bootstrap = n_bootstrap, conf_level = conf_level,
-                       boundary = 0, breaks = breaks)
+    distances = lapply(distances, summarize_distances, breaks = breaks,
+                       n_bootstrap = n_bootstrap, conf_level = conf_level)
   }
 
   if (!is.null(group)){
-    distances = Map(cbind, distances, group = names(distances))
+    distances = Map(dplyr::bind_cols, distances, group = names(distances))
   }
 
   distances = do.call(rbind, distances)
