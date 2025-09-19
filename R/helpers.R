@@ -12,25 +12,12 @@ make_breaks = function(cutoff, breaks) {
   return(breaks)
 }
 
-create_sample_points_terra = function(x, sample_size){
-  if (inherits(x, "SpatRaster")){
-    if (sample_size <= 1){
-      sample_size = ceiling(terra::ncell(x) * sample_size)
-    }
-    selected_points = terra::spatSample(x, size = sample_size, method = "random",
-                                       na.rm = TRUE, as.points = TRUE)
-    selected_points = sf::st_as_sf(selected_points)
-  } else if (inherits(x, "sf")){
-    if (sample_size <= 1){
-      sample_size = ceiling(nrow(x) * sample_size)
-    } else if (sample_size > nrow(x)){
-      sample_size = nrow(x)
-      warning("The specified sample size is larger than number of points. Using all points.",
-              call. = FALSE)
-    }
-    selected_points = x[sample(seq_len(nrow(x)), size = sample_size), ]
-  }
-  return(selected_points)
+get_mean_brakes = function(x){
+  br = strsplit(as.character(x), split = "\\,")
+  br = lapply(br, gsub, pattern = "[\\[\\(\\)\\]]", replacement = "", perl = TRUE)
+  br = lapply(br, as.numeric)
+  br = vapply(br, mean, FUN.VALUE = 1.0)
+  return(br)
 }
 
 # create_sample_points_motif = function(x, sample_size, ...){
@@ -54,12 +41,26 @@ create_sample_points = function(x, sample_size, ...){
   return(raster_pattern)
 }
 
-get_mean_brakes = function(x){
-  br = strsplit(as.character(x), split = "\\,")
-  br = lapply(br, gsub, pattern = "[\\[\\(\\)\\]]", replacement = "", perl = TRUE)
-  br = lapply(br, as.numeric)
-  br = vapply(br, mean, FUN.VALUE = 1.0)
-  return(br)
+
+create_sample_points_terra = function(x, sample_size){
+  if (inherits(x, "SpatRaster")){
+    if (sample_size <= 1){
+      sample_size = ceiling(terra::ncell(x) * sample_size)
+    }
+    selected_points = terra::spatSample(x, size = sample_size, method = "random",
+                                       na.rm = TRUE, as.points = TRUE)
+    selected_points = sf::st_as_sf(selected_points)
+  } else if (inherits(x, "sf")){
+    if (sample_size <= 1){
+      sample_size = ceiling(nrow(x) * sample_size)
+    } else if (sample_size > nrow(x)){
+      sample_size = nrow(x)
+      warning("The specified sample size is larger than number of points. Using all points.",
+              call. = FALSE)
+    }
+    selected_points = x[sample(seq_len(nrow(x)), size = sample_size), ]
+  }
+  return(selected_points)
 }
 
 calculate_distances = function(x, dist_fun, ...){
