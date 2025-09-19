@@ -138,7 +138,7 @@ summarize_distances = function(x, breaks,
 
   if (missing(n_bootstrap) || n_bootstrap <=1){
     y = y |>
-      dplyr::group_by(.data$dist) |>
+      dplyr::group_by(.data$dist, .drop = FALSE) |>
       dplyr::summarise(
         dissimilarity = mean(.data$dissimilarity, na.rm = TRUE),
         np = dplyr::n(),
@@ -150,7 +150,7 @@ summarize_distances = function(x, breaks,
       dplyr::select("np", "dist", "dissimilarity")
   } else {
     y = y |>
-      dplyr::group_by(.data$dist) |>
+      dplyr::group_by(.data$dist, .drop = FALSE) |>
       dplyr::summarise(
         ci = list(calculate_ci(.data$dissimilarity, n_bootstrap, conf_level)),
         dissimilarity = mean(.data$dissimilarity, na.rm = TRUE),
@@ -159,11 +159,10 @@ summarize_distances = function(x, breaks,
       ) |>
       dplyr::mutate(
         dist = get_mean_brakes(.data$dist),
-        ci_lower = purrr::map_dbl(.data$ci, ~ .x[1]),
-        ci_upper = purrr::map_dbl(.data$ci, ~ .x[2])
+        ci_lower = vapply(.data$ci, function(x) x[1], numeric(1)),
+        ci_upper = vapply(.data$ci, function(x) x[2], numeric(1))
       ) |>
       dplyr::select("np", "dist", "dissimilarity", "ci_lower", "ci_upper")
   }
-
   return(y)
 }
