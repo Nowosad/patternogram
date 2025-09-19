@@ -13,7 +13,6 @@
 #' @param interval Type of interval to be calculated. Options are "none" (default), "confidence" (confidence intervals around the mean dissimilarity estimate), and "uncertainty" (uncertainty intervals around the dissimilarity estimates). The confidence intervals are calculated using a bootstrap approach, while the uncertainty intervals are calculated using a Monte Carlo approach. Note that uncertainty intervals require more computations than confidence intervals. Also, confidence intervals are only available when `cloud = FALSE`.
 #' @param interval_opts A list of options for interval calculations. Possible options are (a) `conf_level`: confidence level for intervals (default: 0.95), (b) `n_bootstrap`: number of bootstrap samples for confidence intervals (default: 100), and (c) `n_montecarlo`: number of Monte Carlo repetitions for uncertainty intervals (default: 100)
 #' @param ... Not used
-#' #Additional arguments for `base::cut()`
 #'
 #' @return A tibble of the patternogram class with columns (a) np: the number of point pairs in this estimate, (b) dist: the middle of the distance interval used for each estimate, (c) dissimilarity: the dissimilarity estimate.
 #' Additionally, if `interval = "confidence"`, the tibble contains columns (d) ci_lower: lower confidence interval, and (e) ci_upper: upper confidence interval. If `interval = "uncertainty"`, the tibble contains columns (d) ui_lower: lower uncertainty interval, and (e) ui_upper: upper uncertainty interval.
