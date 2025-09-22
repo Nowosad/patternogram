@@ -4,10 +4,12 @@
 \alias{autoplot.patternogram}
 \title{Plot a patternogram}
 \usage{
-\method{autoplot}{patternogram}(object, ...)
+\method{autoplot}{patternogram}(object, point_size = 2, ...)
 }
 \arguments{
 \item{object}{An output of the \code{patternogram()} function}
+
+\item{point_size}{Size of the points in the plot}
 
 \item{...}{Additional arguments to \code{autoplot()}}
 }

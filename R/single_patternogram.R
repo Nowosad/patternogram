@@ -3,12 +3,18 @@ single_patternogram = function(sample_points, cutoff, breaks,
                                group = NULL,
                                n_bootstrap, conf_level, ...) {
 
-  if (!is.null(group)){
+  if (!is.null(group) && is.character(group)){
     # if (is.numeric(sample_points[[group]])){
     #   sample_points[[group]] = cut(sample_points[[group]], ...)
     # }
     sample_points = split(sample_points[setdiff(names(sample_points), group)],
                           f = sample_points[[group]])
+  } else if (isTRUE(group)) {
+    attr_cols = setdiff(names(sample_points), attr(sample_points, "sf_column"))
+    sample_points = lapply(attr_cols, function(col) {
+      sample_points[c(col, attr(sample_points, "sf_column"))]
+    })
+    names(sample_points) = attr_cols
   } else {
     sample_points = list(sample_points)
   }
