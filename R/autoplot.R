@@ -12,20 +12,14 @@ autoplot.patternogram = function(object, point_size = 2, ...) {
   has_ui = all(c("ui_lower", "ui_upper") %in% colnames(object))
 
   if (all(c("id", "group") %in% colnames(object))) {
-    color_var   = "group"
-    shape_var   = "id"
-    legend_title_color = "Group"
-    legend_title_shape = "Patternogram"
+    color_var   = "group"; legend_title_color = "Group"
+    shape_var   = "id"; legend_title_shape = "Patternogram"
   } else if ("group" %in% colnames(object)) {
-    color_var   = "group"
-    shape_var   = NULL
-    legend_title_color = "Group"
-    legend_title_shape = NULL
+    color_var   = "group"; legend_title_color = "Group"
+    shape_var   = NULL; legend_title_shape = NULL
   } else if ("id" %in% colnames(object)) {
-    color_var   = NULL
-    shape_var   = "id"
-    legend_title_color = NULL
-    legend_title_shape = "Patternogram"
+    color_var   = NULL; legend_title_color = NULL
+    shape_var   = "id"; legend_title_shape = "Patternogram"
   } else {
     color_var   = NULL
     shape_var   = NULL
