@@ -94,3 +94,9 @@ df_scaled = df |>
 class(df_scaled) = c("patternogram", class(df_scaled))
 plot(df_scaled)
 ```
+
+```{r}
+p3 = patternogram(pr_weighted, group = TRUE)
+plot(p3)
+```
+
