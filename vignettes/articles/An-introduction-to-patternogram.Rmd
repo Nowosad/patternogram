@@ -1,0 +1,79 @@
+---
+title: "An introduction to patternogram"
+author: Jakub Nowosad
+date: "`r Sys.Date()`"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+Let's start by attaching the necessary packages.
+
+```{r setup}
+#| message: false
+library(patternogram)
+library(sf)
+library(terra)
+```
+
+Next, we load two spatial datasets.
+The first one is a spatial vector point dataset with annual average air temperature measurements in Celsius for Spain in 2019.
+The second one is a raster dataset with predictors, such as population density (`popdens`), distance to the coast (`coast`), elevation (`dem`), a satellite-based Normalized Difference Vegetation Index (`ndvi`), and annual average composites of the Land Surface Temperature product for day (`lst_day`) and night (`lst_night`).
+
+```{r}
+temp_train = read_sf("/vsicurl/https://github.com/Nowosad/IIIRqueR_workshop_materials/raw/refs/heads/main/data/temp_train.gpkg")
+plot(temp_train)
+
+predictors = rast("/vsicurl/https://github.com/Nowosad/IIIRqueR_workshop_materials/raw/refs/heads/main/data/predictors.tif")
+plot(predictors, axes = FALSE)
+```
+
+## Part 1
+
+```{r}
+p_tt = patternogram(temp_train)
+p_tt
+```
+
+```{r}
+plot(p_tt)
+```
+
+```{r}
+p_tt250 = patternogram(temp_train, cutoff = 250000)
+p_tt250
+plot(p_tt250)
+```
+
+## Part 2
+
+```{r}
+nx = minmax(predictors)    
+pr = (predictors - nx[1, ]) / (nx[2, ] - nx[1, ])
+```
+
+```{r}
+p_pr = patternogram(pr)
+p_pr
+plot(p_pr)
+```
+
+```{r}
+p_pr_dist = patternogram(pr, dist_fun = "manhattan")
+plot(p_pr_dist)
+```
+
+```{r}
+p_pr_np = patternogram(pr, sample_size = 50)
+plot(p_pr_np)
+```
+
+```{r}
+p_pr_l = patternogram(pr, group = TRUE)
+plot(p_pr_l)
+```
+

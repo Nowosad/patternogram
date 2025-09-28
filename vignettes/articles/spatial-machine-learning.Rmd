@@ -1,0 +1,96 @@
+---
+title: "An introduction to patternogram"
+author: Jakub Nowosad
+date: "`r Sys.Date()`"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+Let's start by attaching the necessary packages.
+
+```{r setup}
+#| message: false
+library(patternogram)
+library(sf)
+library(terra)
+library(rpart)
+```
+
+Next, we load two spatial datasets.
+The first one is a spatial vector point dataset with annual average air temperature measurements in Celsius for Spain in 2019.
+The second one is a raster dataset with predictors, such as population density (`popdens`), distance to the coast (`coast`), elevation (`dem`), a satellite-based Normalized Difference Vegetation Index (`ndvi`), and annual average composites of the Land Surface Temperature product for day (`lst_day`) and night (`lst_night`).
+
+```{r}
+temp_train = read_sf("/vsicurl/https://github.com/Nowosad/IIIRqueR_workshop_materials/raw/refs/heads/main/data/temp_train.gpkg")
+plot(temp_train)
+
+predictors = rast("/vsicurl/https://github.com/Nowosad/IIIRqueR_workshop_materials/raw/refs/heads/main/data/predictors.tif")
+plot(predictors, axes = FALSE)
+```
+
+```{r}
+temp = extract(predictors, temp_train, ID = FALSE)
+temp_train_all = cbind(temp_train, temp)
+rpart_model = rpart(temp ~ ., data = st_drop_geometry(temp_train_all))
+rpart_model
+```
+
+```{r}
+var_imp = rpart_model$variable.importance
+var_imp = (var_imp / sum(var_imp)) * length(var_imp)
+var_imp
+```
+
+```{r}
+nx = minmax(predictors)    
+pr = (predictors - nx[1, ]) / (nx[2, ] - nx[1, ])
+pr = pr[[names(var_imp)]]
+```
+
+```{r}
+pr_weighted = pr * var_imp
+panel(pr_weighted, axes = FALSE)
+```
+
+```{r}
+p1 = patternogram(pr)
+p2 = patternogram(pr_weighted)
+p_12 = c(p1, p2, ids = c("unweighted", "weighted"))
+plot(p_12)
+```
+
+```{r}
+p1_250 = patternogram(pr, cutoff = 250000)
+p2_250 = patternogram(pr_weighted, cutoff = 250000)
+p_12_250 = c(p1_250, p2_250, ids = c("unweighted", "weighted"))
+plot(p_12_250)
+```
+
+```{r}
+p_tt = patternogram(temp_train)
+plot(p_tt)
+```
+
+```{r}
+p_all = c(p1, p2, p_tt, ids = c("unweighted", "weighted", "temperature"))
+plot(p_all)
+```
+
+```{r}
+#| eval: false
+#| echo: false
+library(dplyr)
+df = p_all
+df_scaled = df |>
+  group_by(id) |>
+  mutate(dissimilarity = (dissimilarity - min(dissimilarity)) / 
+                                  (max(dissimilarity) - min(dissimilarity))) |>
+  ungroup()
+class(df_scaled) = c("patternogram", class(df_scaled))
+plot(df_scaled)
+```
