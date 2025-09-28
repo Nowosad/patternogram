@@ -179,6 +179,10 @@ Temperature product for day (<code>lst_day</code>) and night
 <code class="sourceCode R"><span><span class="va">p_all</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">p1</span>, <span class="va">p2</span>, <span class="va">p_tt</span>, ids <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"unweighted"</span>, <span class="st">"weighted"</span>, <span class="st">"temperature"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">p_all</span><span class="op">)</span></span></code></pre></div>
 <p><img src="spatial-machine-learning_files/figure-html/unnamed-chunk-10-1.png" width="700"></p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">p3</span> <span class="op">=</span> <span class="fu"><a href="../reference/patternogram.html">patternogram</a></span><span class="op">(</span><span class="va">pr_weighted</span>, group <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">p3</span><span class="op">)</span></span></code></pre></div>
+<p><img src="spatial-machine-learning_files/figure-html/unnamed-chunk-12-1.png" width="700"></p>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
