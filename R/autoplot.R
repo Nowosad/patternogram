@@ -62,14 +62,14 @@ autoplot.patternogram = function(object, point_size = 2, ...) {
     gg = gg +
       ggplot2::geom_ribbon(
         ggplot2::aes(ymin = .data$ci_lower, ymax = .data$ci_upper),
-        alpha = 0.3, inherit.aes = TRUE
+        alpha = 0.2, inherit.aes = TRUE
       )
   }
   if (has_ui) {
     gg = gg +
       ggplot2::geom_ribbon(
         ggplot2::aes(ymin = .data$ui_lower, ymax = .data$ui_upper),
-        alpha = 0.3, inherit.aes = TRUE
+        alpha = 0.2, inherit.aes = TRUE
       )
   }
   return(gg)
