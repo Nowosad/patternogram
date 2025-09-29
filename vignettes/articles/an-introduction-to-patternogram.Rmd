@@ -1,0 +1,124 @@
+---
+title: "An introduction to patternogram"
+author: Jakub Nowosad
+date: "`r Sys.Date()`"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+ collapse = TRUE,
+ comment = "#>"
+)
+```
+
+The **patternogram** package provides tools for visual exploration of spatial autocorrelation of values from a set of points or a raster object.
+The patternogram can be used to identify the spatial scale at which the pattern of the points or raster changes and to compare the patterns of different sets of points or rasters.
+This vignette provides a brief introduction to the package and its main functions.
+
+Let's start by attaching the necessary packages.
+
+```{r setup}
+#| message: false
+library(patternogram)
+library(sf)
+library(terra)
+```
+
+## Patternograms of point data
+
+The first dataset is a spatial vector point dataset with annual average air temperature measurements in Celsius for Spain in 2019.
+
+```{r}
+temp_train = read_sf("/vsicurl/https://github.com/Nowosad/IIIRqueR_workshop_materials/raw/refs/heads/main/data/temp_train.gpkg")
+plot(temp_train)
+```
+
+The primary function of the package is `patternogram()`.
+It calculates the dissimilarity between pairs of points at different distances, and then groups these dissimilarity estimates into distance intervals to create a patternogram. 
+
+```{r}
+p_tt = patternogram(temp_train)
+p_tt
+```
+
+The output is a tibble of the `patternogram` class with columns `np`: the number of point pairs in this estimate, `dist`: the middle of the distance interval used for each estimate, and `dissimilarity`: the dissimilarity estimate.
+This object can be plotted using the `plot()` function.
+
+```{r}
+plot(p_tt)
+```
+
+Such a plot represents a relationship between the distance between points (x-axis) and the dissimilarity of their values (y-axis).
+Here, we can see that the dissimilarity of temperature values increases with distance up to around 700 km.
+
+We can also specify a cutoff distance with the `cutoff` argument to limit the maximum distance considered in the analysis.
+This allows us to focus on smaller distances.
+
+```{r}
+p_tt250 = patternogram(temp_train, cutoff = 250000)
+plot(p_tt250)
+```
+
+Now, we may notice that the dissimilarity increases quickly up to around 60 km and then still increases, but at a slower rate.
+
+## Patternograms of raster data
+
+The second example data is a raster dataset with predictors, such as population density (`popdens`), distance to the coast (`coast`), elevation (`dem`), a satellite-based Normalized Difference Vegetation Index (`ndvi`), and annual average composites of the Land Surface Temperature product for day (`lst_day`) and night (`lst_night`).
+
+```{r}
+predictors = rast("/vsicurl/https://github.com/Nowosad/IIIRqueR_workshop_materials/raw/refs/heads/main/data/predictors.tif")
+plot(predictors, axes = FALSE)
+```
+
+These variables have different units and ranges of values, so we need to standardize them before calculating the patternogram.
+Otherwise, the variables with larger ranges will dominate the dissimilarity calculations.
+To standardize the variables, we can use min-max normalization, which rescales the values of each variable to a range between 0 and 1.
+
+```{r}
+nx = minmax(predictors)    
+pr = (predictors - nx[1, ]) / (nx[2, ] - nx[1, ])
+```
+
+Now, we can calculate the patternogram for the standardized raster data using the same `patternogram()` function.
+
+```{r}
+p_pr = patternogram(pr)
+p_pr
+plot(p_pr)
+```
+
+Both the output tibble and the plot are similar to those for point data.
+<!-- explain -->
+
+In the background, the function randomly samples 500 points from the raster to calculate the dissimilarity between pairs of points at different distances.
+
+We can change the sample size using the `sample_size` argument -- smaller sample sizes will result in faster calculations but may be less stable.
+
+```{r}
+p_pr_np = patternogram(pr, sample_size = 50)
+plot(p_pr_np)
+```
+
+By default, the function uses the squared Euclidean distance to calculate dissimilarities between points.
+It means that each point values (in this case six values of six raster layers) are compared to another point values using the Euclidean distance formula.
+However, we can change the dissimilarity measure using the `dist_fun` argument to other suitable measures, depending on the data and the research question.
+In the example below, we use the Manhattan distance.
+```{r}
+p_pr_dist = patternogram(pr, dist_fun = "manhattan")
+plot(p_pr_dist)
+```
+
+Finally, we can calculate and plot patternograms for each raster layer separately using the `group = TRUE` argument.
+
+```{r}
+p_pr_l = patternogram(pr, group = TRUE)
+plot(p_pr_l)
+```
+
+This allows us to compare the spatial patterns of different variables in the raster dataset.
+<!-- explain -->
+
+## Summary
+
+This document provided a brief introduction to the **patternogram** package and its main functions.
+For more expanded examples and explanations, see the second vignette: [Exploring spatial patterns with patternograms](https://jakubnowosad.com/vignettes/articles/customizations.html).
