@@ -3,6 +3,7 @@
 S3method(autoplot,patternogram)
 S3method(c,patternogram)
 S3method(plot,patternogram)
+S3method(print,patternogram)
 export(patternogram)
 importFrom(ggplot2,autoplot)
 importFrom(graphics,plot)
