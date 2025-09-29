@@ -2,7 +2,7 @@ pandoc: 3.1.3
 pkgdown: 2.1.3
 pkgdown_sha: ~
 articles:
-  articles/An-introduction-to-patternogram_ext: An-introduction-to-patternogram_ext.html
-  articles/An-introduction-to-patternogram: An-introduction-to-patternogram.html
+  articles/an-introduction-to-patternogram: an-introduction-to-patternogram.html
+  articles/customizations: customizations.html
   articles/spatial-machine-learning: spatial-machine-learning.html
-last_built: 2025-09-29T14:28Z
+last_built: 2025-09-29T16:54Z
