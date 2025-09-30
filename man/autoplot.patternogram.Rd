@@ -2,17 +2,33 @@
 % Please edit documentation in R/autoplot.R
 \name{autoplot.patternogram}
 \alias{autoplot.patternogram}
+\alias{plot.patternogram}
 \title{Plot a patternogram}
 \usage{
 \method{autoplot}{patternogram}(object, point_size = 2, ...)
+
+\method{plot}{patternogram}(x, ...)
 }
 \arguments{
-\item{object}{An output of the \code{patternogram()} function}
+\item{object, x}{An object of class \code{patternogram}, usually created by \code{\link[=patternogram]{patternogram()}}.}
 
-\item{point_size}{Size of the points in the plot}
+\item{point_size}{Numeric; size of the points (default 2).}
 
-\item{...}{Additional arguments to \code{autoplot()}}
+\item{...}{Additional arguments passed to \code{\link[ggplot2:autoplot]{ggplot2::autoplot()}} (for  \code{autoplot.patternogram()}) or forwarded to it (for \code{plot.patternogram()}).}
+}
+\value{
+For \code{autoplot.patternogram()}, a \link[ggplot2:ggplot]{ggplot2::ggplot} object that can be further modified. For \code{plot.patternogram()}, the plot is drawn directly and invisibly returns the \code{ggplot} object.
 }
 \description{
-Plot a patternogram
+Provides both \code{autoplot()} and \code{plot()} methods for objects of class \code{patternogram}. These functions visualize the dissimilarity relation to distance, with optional grouping, identifiers, and confidence/uncertainty intervals if present.
+}
+\details{
+The plotting behavior adapts automatically depending on the columns available in the object:
+\itemize{
+\item If \code{group} is present, curves/points are colored by group.
+\item If \code{id} is present, curves/points have different shapes by patternogram.
+\item If both \code{group} and \code{id} are present, both aesthetics are used.
+\item If \code{ci_lower} / \code{ci_upper} or \code{ui_lower} / \code{ui_upper} are present,
+shaded ribbons are drawn to show confidence or uncertainty intervals.
+}
 }

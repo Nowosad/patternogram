@@ -1,8 +1,20 @@
 #' Plot a patternogram
 #'
-#' @param object An output of the `patternogram()` function
-#' @param point_size Size of the points in the plot
-#' @param ... Additional arguments to `autoplot()`
+#' Provides both `autoplot()` and `plot()` methods for objects of class `patternogram`. These functions visualize the dissimilarity relation to distance, with optional grouping, identifiers, and confidence/uncertainty intervals if present.
+#'
+#' The plotting behavior adapts automatically depending on the columns available in the object:
+#'
+#' * If `group` is present, curves/points are colored by group.
+#' * If `id` is present, curves/points have different shapes by patternogram.
+#' * If both `group` and `id` are present, both aesthetics are used.
+#' * If `ci_lower` / `ci_upper` or `ui_lower` / `ui_upper` are present,
+#'   shaded ribbons are drawn to show confidence or uncertainty intervals.
+#'
+#' @param object,x An object of class `patternogram`, usually created by [patternogram()].
+#' @param point_size Numeric; size of the points (default 2).
+#' @param ... Additional arguments passed to [ggplot2::autoplot()] (for  `autoplot.patternogram()`) or forwarded to it (for `plot.patternogram()`).
+#'
+#' @return For `autoplot.patternogram()`, a [ggplot2::ggplot] object that can be further modified. For `plot.patternogram()`, the plot is drawn directly and invisibly returns the `ggplot` object.
 #'
 #' @export
 #' @importFrom ggplot2 autoplot
@@ -75,13 +87,9 @@ autoplot.patternogram = function(object, point_size = 2, ...) {
   return(gg)
 }
 
-#' Plot a patternogram
-#'
-#' @param x An output of the `patternogram()` function
-#' @param ... Additional arguments to `autoplot()`
-#'
+#' @rdname autoplot.patternogram
 #' @export
-#' @importFrom graphics plot
+#' @method plot patternogram
 plot.patternogram = function(x, ...) {
   print(autoplot(x, ...))
 }
