@@ -329,13 +329,13 @@ located in the southern part of Spain.</p>
 <code class="sourceCode R"><span><span class="va">p_tt_north</span> <span class="op">=</span> <span class="fu"><a href="../reference/patternogram.html">patternogram</a></span><span class="op">(</span><span class="va">temp_train_north</span>, interval <span class="op">=</span> <span class="st">"confidence"</span><span class="op">)</span></span>
 <span><span class="va">p_tt_south</span> <span class="op">=</span> <span class="fu"><a href="../reference/patternogram.html">patternogram</a></span><span class="op">(</span><span class="va">temp_train_south</span>, interval <span class="op">=</span> <span class="st">"confidence"</span><span class="op">)</span></span></code></pre></div>
 <p>The resulting patternograms can be combined into a single object
-using the <code><a href="https://rdrr.io/r/base/c.html" class="external-link">c()</a></code> function. It accepts multiple patternogram
-objects and an optional <code>ids</code> argument, which allows us to
-specify labels for each patternogram. The resulting object is also of
-the <code>patternogram</code> class and can be plotted using the
-<code><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot()</a></code> function.</p>
+using the <code><a href="../reference/bind_patternogram.html">bind_patternogram()</a></code> function. It accepts multiple
+patternogram objects and an optional <code>ids</code> argument, which
+allows us to specify labels for each patternogram. The resulting object
+is also of the <code>patternogram</code> class and can be plotted using
+the <code><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot()</a></code> function.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">p_pr_both</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">p_tt_north</span>, <span class="va">p_tt_south</span>, ids <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"north"</span>, <span class="st">"south"</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">p_pr_both</span> <span class="op">=</span> <span class="fu"><a href="../reference/bind_patternogram.html">bind_patternogram</a></span><span class="op">(</span><span class="va">p_tt_north</span>, <span class="va">p_tt_south</span>, ids <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"north"</span>, <span class="st">"south"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">p_pr_both</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A patternogram: 30 × 6</span></span></span>
 <span><span class="co">#&gt;       np   dist dissimilarity ci_lower ci_upper id   </span></span>
