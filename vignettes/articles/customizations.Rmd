@@ -142,12 +142,12 @@ p_tt_north = patternogram(temp_train_north, interval = "confidence")
 p_tt_south = patternogram(temp_train_south, interval = "confidence")
 ```
 
-The resulting patternograms can be combined into a single object using the `c()` function.
+The resulting patternograms can be combined into a single object using the `bind_patternogram()` function.
 It accepts multiple patternogram objects and an optional `ids` argument, which allows us to specify labels for each patternogram.
 The resulting object is also of the `patternogram` class and can be plotted using the `plot()` function.
 
 ```{r}
-p_pr_both = c(p_tt_north, p_tt_south, ids = c("north", "south"))
+p_pr_both = bind_patternogram(p_tt_north, p_tt_south, ids = c("north", "south"))
 p_pr_both
 plot(p_pr_both)
 ```

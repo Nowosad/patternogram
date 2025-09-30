@@ -62,7 +62,7 @@ plot(p_pr)
 ```
 
 ```{r}
-plot(c(p_train_pred, p_pr))
+plot(bind_patternogram(p_train_pred, p_pr))
 ```
 
 
@@ -77,12 +77,12 @@ plot(p_pr2)
 ```
 
 ```{r}
-plot(c(p_train_pred2, p_pr2))
+plot(bind_patternogram(p_train_pred2, p_pr2))
 ```
 
 ```{r}
 library(ggplot2)
-autoplot(c(p_train_pred2, p_pr2)) + 
+autoplot(bind_patternogram(p_train_pred2, p_pr2)) + 
   facet_wrap(~group)
 ```
 
@@ -106,7 +106,7 @@ panel(pr_weighted, axes = FALSE)
 ```{r}
 p1 = patternogram(pr)
 p2 = patternogram(pr_weighted)
-p_12 = c(p1, p2, ids = c("unweighted", "weighted"))
+p_12 = bind_patternogram(p1, p2, ids = c("unweighted", "weighted"))
 plot(p_12)
 ```
 
@@ -122,5 +122,5 @@ plot(prediction)
 
 ```{r}
 p_prediction = patternogram(prediction)
-plot(c(p_temp_train, p_prediction, ids = c("stations", "prediction")))
+plot(bind_patternogram(p_temp_train, p_prediction, ids = c("stations", "prediction")))
 ```
