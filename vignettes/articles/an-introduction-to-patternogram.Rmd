@@ -121,4 +121,4 @@ This allows us to compare the spatial patterns of different variables in the ras
 ## Summary
 
 This document provided a brief introduction to the **patternogram** package and its main functions.
-For more expanded examples and explanations, see the second vignette: [Exploring spatial patterns with patternograms](https://jakubnowosad.com/vignettes/articles/customizations.html).
+For more expanded examples and explanations, see the second vignette: [Customizations in patternogram](customizations.html).
