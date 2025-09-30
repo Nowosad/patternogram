@@ -1,5 +1,5 @@
 ---
-title: "Customizations in patternogram"
+title: "Customizations and additional features of the patternogram package"
 author: Jakub Nowosad
 date: "`r Sys.Date()`"
 ---
@@ -10,6 +10,10 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 ```
+
+The **patternogram** package provides tools for visual exploration of spatial autocorrelation of values from a set of points or a raster object.
+This vignette shows various customizations and additional features available in the package.
+It extends the introduction provided in the [An introduction to patternogram](an-introduction-to-patternogram.html) vignette.
 
 Let's start by attaching the necessary packages.
 
@@ -32,22 +36,21 @@ predictors = rast("/vsicurl/https://github.com/Nowosad/IIIRqueR_workshop_materia
 plot(predictors, axes = FALSE)
 ```
 
-## Part 1
+## Patternograms of point data
+
+The `patternogram()` function is the main function of the package -- it calculates the relationship between spatial distance and dissimilarity of values and returns an object of the `patternogram` class.
+When the first argument is a set of points, the function calculates distances between all pairs of points and dissimilarities between their values.
 
 ```{r}
 p_tt = patternogram(temp_train)
 p_tt
-```
-
-```{r}
 plot(p_tt)
 ```
 
-```{r}
-p_tt250 = patternogram(temp_train, cutoff = 250000)
-p_tt250
-plot(p_tt250)
-```
+The result of plotting a patternogram is a scatter plot showing the dissimilarity of values for different spatial distances.
+However, often our point datasets are a sample of a larger population and, moreover, their values may be subject to measurement errors.
+Therefore, it is useful to estimate and visualize **confidence intervals** of the dissimilarity estimates.
+To do this, we can set the `interval` argument to `"confidence"`.
 
 ```{r}
 p_tt_ci = patternogram(temp_train, interval = "confidence")
@@ -55,24 +58,44 @@ p_tt_ci
 plot(p_tt_ci)
 ```
 
+Now, the resulting patternogram contains two additional columns with lower and upper confidence intervals of the dissimilarity estimates (`ci_lower` and `ci_upper`).
+These intervals are also automatically visualized in the plot.
+
+When the `interval` argument is set to `"confidence"`, the function uses a bootstrap approach to estimate confidence intervals.
+By default, it uses 100 bootstrap samples and a confidence level of 0.95; however, we may customize these settings using the `interval_opts` argument.
+In the next example, we set the confidence level to 0.99 and the number of bootstrap samples to 250.
+
 ```{r}
 p_tt_ci2 = patternogram(temp_train, interval = "confidence",
-                        interval_opts = list(conf_level = 0.9, n_bootstrap = 250))
+                        interval_opts = list(conf_level = 0.99, 
+                                             n_bootstrap = 250))
 plot(p_tt_ci2)
 ```
 
+Now, you may notice that the confidence intervals are wider than in the previous example, which is expected when we increase the confidence level.
+
+<!-- where to put/explain cloud? -->
 ```{r}
+#| echo: false
+#| eval: false
 p_tt_cloud = patternogram(temp_train, cloud = TRUE)
 p_tt_cloud
 plot(p_tt_cloud)
 ```
 
-## Part 2
+## Patternograms of raster data
+
+The raster variables have different units and ranges of values, so we need to standardize them before calculating the patternogram.
+Otherwise, the variables with larger ranges will dominate the dissimilarity calculations.
+To standardize the variables, we can use min-max normalization, which rescales the values of each variable to a range between 0 and 1.
 
 ```{r}
 nx = minmax(predictors)    
 pr = (predictors - nx[1, ]) / (nx[2, ] - nx[1, ])
 ```
+
+Similarly to the point data, we can calculate a patternogram for the raster data using the `patternogram()` function.
+In this case, the function randomly samples a specified number of points from the raster (500, by default) and calculates distances and dissimilarities between all pairs of these sampled points.
 
 ```{r}
 p_pr = patternogram(pr)
@@ -80,26 +103,7 @@ p_pr
 plot(p_pr)
 ```
 
-```{r}
-p_pr_250 = patternogram(pr, cutoff = 250000)
-plot(p_pr_250)
-```
-
-```{r}
-p_pr_dist = patternogram(pr, dist_fun = "manhattan")
-plot(p_pr_dist)
-```
-
-```{r}
-p_pr_np = patternogram(pr, sample_size = 50)
-plot(p_pr_np)
-```
-
-```{r}
-p_pr_2 = c(p_pr, p_pr_np)
-p_pr_2
-plot(p_pr_2)
-```
+Here, we also could estimate **confidence intervals** of the dissimilarity estimates -- we just need to set the `interval` argument to `"confidence"`.
 
 ```{r}
 p_pr_ci = patternogram(pr, interval = "confidence")
@@ -107,14 +111,47 @@ p_pr_ci
 plot(p_pr_ci)
 ```
 
+The above patternogram shows the wider confidence intervals for larger distances, which is expected because there are fewer point pairs at larger distances.
+
+Another option for estimating intervals is to use **uncertainty intervals**, which account for the uncertainty of the sampling process.
+Such intervals are estimated using a Monte Carlo approach, where the sampling of points from the raster is repeated multiple times.
+To estimate uncertainty intervals, we need to set the `interval` argument to `"uncertainty"` and to customize the confidence level and the number of Monte Carlo repetitions, we may use the `interval_opts` argument.
+
 ```{r}
 p_pr_ui = patternogram(pr, interval = "uncertainty",
-                       interval_opts = list(n_montecarlo = 100))
+                       interval_opts = list(conf_level = 0.99, 
+                                            n_montecarlo = 100))
 p_pr_ui
 plot(p_pr_ui)
 ```
 
+## Combining patternograms
+
+We may want to compare patternograms calculated for different datasets or using different settings.
+To present such comparisons, let's split the `temp_train` dataset into two subsets: one with points located in the northern part of Spain and another one with points located in the southern part of Spain.
+
 ```{r}
-p_pr_l = patternogram(pr, group = TRUE)
-plot(p_pr_l)
+temp_train_north = subset(temp_train, st_coordinates(temp_train)[,2] > 4420000)
+temp_train_south = subset(temp_train, st_coordinates(temp_train)[,2] <= 4420000)
 ```
+
+Next, we calculate patternograms for these two subsets.
+
+```{r}
+p_tt_north = patternogram(temp_train_north, interval = "confidence")
+p_tt_south = patternogram(temp_train_south, interval = "confidence")
+```
+
+The resulting patternograms can be combined into a single object using the `c()` function.
+It accepts multiple patternogram objects and an optional `ids` argument, which allows us to specify labels for each patternogram.
+The resulting object is also of the `patternogram` class and can be plotted using the `plot()` function.
+
+```{r}
+p_pr_both = c(p_tt_north, p_tt_south, ids = c("north", "south"))
+p_pr_both
+plot(p_pr_both)
+```
+
+The resulting plot shows that the dissimilarity estimates for the northern part of Spain are generally higher than those for the southern part.
+It means that the temperature values in the northern part of Spain are more diverse than those in the southern part.
+This observation may be related to the fact that the northern part of Spain has a more varied terrain, including mountains and coastal areas, which can lead to greater temperature variability.
