@@ -41,7 +41,6 @@ create_sample_points = function(x, sample_size, ...){
   return(raster_pattern)
 }
 
-
 create_sample_points_terra = function(x, sample_size, warning){
   if (inherits(x, "SpatRaster")){
     if (sample_size <= 1){

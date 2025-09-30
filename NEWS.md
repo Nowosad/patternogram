@@ -1,12 +1,10 @@
-# patternogram 0.1.2
+# patternogram 0.2 (wip)
 
+* Updates autoplot to handle many patternograms at the same time
+* Adds parallalization possibility when calculating uncertainty intervals
 * Adds an option of splitting the patternograms by raster layers
 * Adds a new function c.patternogram() to merge many patternogram objects
-* Updates autoplot to handle many patternograms at the same time
-
-# patternogram 0.1.1
-
-* Adds parallalization possibility when calculating uncertainty intervals
+* Adds a new function rescale_patternogram() to rescale patternograms to a common scale
 
 # patternogram 0.1.0
 
