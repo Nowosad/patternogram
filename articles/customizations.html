@@ -5,13 +5,13 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Customizations in patternogram • patternogram</title>
+<title>Customizations and additional features of the patternogram package • patternogram</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Customizations in patternogram">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Customizations and additional features of the patternogram package">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -52,7 +52,7 @@
       <a href="../articles/an-introduction-to-patternogram.html">An introduction to patternogram</a>
     </li>
     <li>
-      <a href="../articles/customizations.html">Customizations in patternogram</a>
+      <a href="../articles/customizations.html">Customizations and additional features of the patternogram package</a>
     </li>
     <li>
       <a href="../articles/spatial-machine-learning.html">An introduction to patternogram</a>
@@ -83,11 +83,12 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Customizations in patternogram</h1>
+      <h1 data-toc-skip>Customizations and additional features of the
+patternogram package</h1>
                         <h4 data-toc-skip class="author">Jakub
 Nowosad</h4>
             
-            <h4 data-toc-skip class="date">2025-09-29</h4>
+            <h4 data-toc-skip class="date">2025-09-30</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Nowosad/patternogram/blob/main/vignettes/articles/customizations.Rmd" class="external-link"><code>vignettes/articles/customizations.Rmd</code></a></small>
       <div class="hidden name"><code>customizations.Rmd</code></div>
@@ -96,6 +97,12 @@ Nowosad</h4>
 
     
     
+<p>The <strong>patternogram</strong> package provides tools for visual
+exploration of spatial autocorrelation of values from a set of points or
+a raster object. This vignette shows various customizations and
+additional features available in the package. It extends the
+introduction provided in the <a href="an-introduction-to-patternogram.html">An introduction to
+patternogram</a> vignette.</p>
 <p>Let’s start by attaching the necessary packages.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/Nowosad/patternogram" class="external-link">patternogram</a></span><span class="op">)</span></span>
@@ -120,15 +127,18 @@ Temperature product for day (<code>lst_day</code>) and night
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">predictors</span>, axes <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <p><img src="customizations_files/figure-html/unnamed-chunk-2-2.png" width="700"></p>
 <div class="section level2">
-<h2 id="part-1">Part 1<a class="anchor" aria-label="anchor" href="#part-1"></a>
+<h2 id="patternograms-of-point-data">Patternograms of point data<a class="anchor" aria-label="anchor" href="#patternograms-of-point-data"></a>
 </h2>
+<p>The <code><a href="../reference/patternogram.html">patternogram()</a></code> function is the main function of the
+package – it calculates the relationship between spatial distance and
+dissimilarity of values and returns an object of the
+<code>patternogram</code> class. When the first argument is a set of
+points, the function calculates distances between all pairs of points
+and dissimilarities between their values.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">p_tt</span> <span class="op">=</span> <span class="fu"><a href="../reference/patternogram.html">patternogram</a></span><span class="op">(</span><span class="va">temp_train</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: The specified sample size is larger than number of points. Using all</span></span>
-<span><span class="co">#&gt; points.</span></span>
 <span><span class="va">p_tt</span></span>
-<span><span class="co">#&gt; # A patternogram (tibble): 15 by 3 </span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 15 × 3</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A patternogram: 15 × 3</span></span></span>
 <span><span class="co">#&gt;       np   dist dissimilarity</span></span>
 <span><span class="co">#&gt;  <span style="color: #BCBCBC;">*</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>   334  <span style="text-decoration: underline;">30</span>200          1.72</span></span>
@@ -145,207 +155,211 @@ Temperature product for day (<code>lst_day</code>) and night
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span>   986 <span style="text-decoration: underline;">694</span>500          4.38</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">13</span>   763 <span style="text-decoration: underline;">755</span>000          4.00</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">14</span>   467 <span style="text-decoration: underline;">815</span>000          3.89</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">15</span>   215 <span style="text-decoration: underline;">875</span>500          3.52</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">15</span>   215 <span style="text-decoration: underline;">875</span>500          3.52</span></span>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">p_tt</span><span class="op">)</span></span></code></pre></div>
+<p><img src="customizations_files/figure-html/unnamed-chunk-3-1.png" width="700"></p>
+<p>The result of plotting a patternogram is a scatter plot showing the
+dissimilarity of values for different spatial distances. However, often
+our point datasets are a sample of a larger population and, moreover,
+their values may be subject to measurement errors. Therefore, it is
+useful to estimate and visualize <strong>confidence intervals</strong>
+of the dissimilarity estimates. To do this, we can set the
+<code>interval</code> argument to <code>"confidence"</code>.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">p_tt</span><span class="op">)</span></span></code></pre></div>
-<p><img src="customizations_files/figure-html/unnamed-chunk-4-1.png" width="700"></p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">p_tt250</span> <span class="op">=</span> <span class="fu"><a href="../reference/patternogram.html">patternogram</a></span><span class="op">(</span><span class="va">temp_train</span>, cutoff <span class="op">=</span> <span class="fl">250000</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: The specified sample size is larger than number of points. Using all</span></span>
-<span><span class="co">#&gt; points.</span></span>
-<span><span class="va">p_tt250</span></span>
-<span><span class="co">#&gt; # A patternogram (tibble): 15 by 3 </span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 15 × 3</span></span></span>
-<span><span class="co">#&gt;       np   dist dissimilarity</span></span>
-<span><span class="co">#&gt;  <span style="color: #BCBCBC;">*</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>    37   <span style="text-decoration: underline;">8</span>350         0.865</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>    65  <span style="text-decoration: underline;">25</span>000         1.39 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>   117  <span style="text-decoration: underline;">41</span>650         1.66 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>   205  <span style="text-decoration: underline;">58</span>350         2.07 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>   235  <span style="text-decoration: underline;">75</span>000         2.13 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>   247  <span style="text-decoration: underline;">91</span>650         2.03 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>   257 <span style="text-decoration: underline;">108</span>500         2.15 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>   311 <span style="text-decoration: underline;">125</span>000         2.09 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>   343 <span style="text-decoration: underline;">141</span>500         2.26 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>   366 <span style="text-decoration: underline;">158</span>500         2.18 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span>   416 <span style="text-decoration: underline;">175</span>000         2.53 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span>   394 <span style="text-decoration: underline;">191</span>500         2.43 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">13</span>   458 <span style="text-decoration: underline;">208</span>500         2.50 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">14</span>   463 <span style="text-decoration: underline;">225</span>000         2.42 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">15</span>   485 <span style="text-decoration: underline;">241</span>500         2.58</span></span>
-<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">p_tt250</span><span class="op">)</span></span></code></pre></div>
-<p><img src="customizations_files/figure-html/unnamed-chunk-5-1.png" width="700"></p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">p_tt_ci</span> <span class="op">=</span> <span class="fu"><a href="../reference/patternogram.html">patternogram</a></span><span class="op">(</span><span class="va">temp_train</span>, interval <span class="op">=</span> <span class="st">"confidence"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: The specified sample size is larger than number of points. Using all</span></span>
-<span><span class="co">#&gt; points.</span></span>
 <span><span class="va">p_tt_ci</span></span>
-<span><span class="co">#&gt; # A patternogram (tibble): 15 by 5 </span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 15 × 5</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A patternogram: 15 × 5</span></span></span>
 <span><span class="co">#&gt;       np   dist dissimilarity ci_lower ci_upper</span></span>
 <span><span class="co">#&gt;  <span style="color: #BCBCBC;">*</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>   334  <span style="text-decoration: underline;">30</span>200          1.72     1.55     1.91</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>   910  <span style="text-decoration: underline;">90</span>700          2.10     1.99     2.21</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>  <span style="text-decoration: underline;">1</span>289 <span style="text-decoration: underline;">151</span>000          2.27     2.18     2.35</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>  <span style="text-decoration: underline;">1</span>622 <span style="text-decoration: underline;">211</span>500          2.49     2.42     2.58</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>  <span style="text-decoration: underline;">1</span>883 <span style="text-decoration: underline;">272</span>000          2.60     2.52     2.69</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>  <span style="text-decoration: underline;">2</span>081 <span style="text-decoration: underline;">332</span>000          2.83     2.74     2.93</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>  <span style="text-decoration: underline;">1</span>984 <span style="text-decoration: underline;">392</span>500          3.25     3.15     3.32</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>  <span style="text-decoration: underline;">1</span>914 <span style="text-decoration: underline;">453</span>000          3.45     3.33     3.57</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>  <span style="text-decoration: underline;">1</span>721 <span style="text-decoration: underline;">513</span>000          3.54     3.42     3.64</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>  <span style="text-decoration: underline;">1</span>446 <span style="text-decoration: underline;">573</span>500          3.85     3.72     3.96</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span>  <span style="text-decoration: underline;">1</span>201 <span style="text-decoration: underline;">634</span>000          4.06     3.91     4.20</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span>   986 <span style="text-decoration: underline;">694</span>500          4.38     4.19     4.52</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">13</span>   763 <span style="text-decoration: underline;">755</span>000          4.00     3.79     4.21</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">14</span>   467 <span style="text-decoration: underline;">815</span>000          3.89     3.71     4.05</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">15</span>   215 <span style="text-decoration: underline;">875</span>500          3.52     3.27     3.78</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>   334  <span style="text-decoration: underline;">30</span>200          1.72     1.54     1.93</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>   910  <span style="text-decoration: underline;">90</span>700          2.10     1.98     2.21</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>  <span style="text-decoration: underline;">1</span>289 <span style="text-decoration: underline;">151</span>000          2.27     2.17     2.37</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>  <span style="text-decoration: underline;">1</span>622 <span style="text-decoration: underline;">211</span>500          2.49     2.41     2.58</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>  <span style="text-decoration: underline;">1</span>883 <span style="text-decoration: underline;">272</span>000          2.60     2.50     2.69</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>  <span style="text-decoration: underline;">2</span>081 <span style="text-decoration: underline;">332</span>000          2.83     2.76     2.92</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>  <span style="text-decoration: underline;">1</span>984 <span style="text-decoration: underline;">392</span>500          3.25     3.15     3.35</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>  <span style="text-decoration: underline;">1</span>914 <span style="text-decoration: underline;">453</span>000          3.45     3.36     3.58</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>  <span style="text-decoration: underline;">1</span>721 <span style="text-decoration: underline;">513</span>000          3.54     3.43     3.69</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>  <span style="text-decoration: underline;">1</span>446 <span style="text-decoration: underline;">573</span>500          3.85     3.71     3.96</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span>  <span style="text-decoration: underline;">1</span>201 <span style="text-decoration: underline;">634</span>000          4.06     3.94     4.17</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span>   986 <span style="text-decoration: underline;">694</span>500          4.38     4.23     4.52</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">13</span>   763 <span style="text-decoration: underline;">755</span>000          4.00     3.82     4.17</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">14</span>   467 <span style="text-decoration: underline;">815</span>000          3.89     3.72     4.08</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">15</span>   215 <span style="text-decoration: underline;">875</span>500          3.52     3.24     3.81</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">p_tt_ci</span><span class="op">)</span></span></code></pre></div>
-<p><img src="customizations_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<p><img src="customizations_files/figure-html/unnamed-chunk-4-1.png" width="700"></p>
+<p>Now, the resulting patternogram contains two additional columns with
+lower and upper confidence intervals of the dissimilarity estimates
+(<code>ci_lower</code> and <code>ci_upper</code>). These intervals are
+also automatically visualized in the plot.</p>
+<p>When the <code>interval</code> argument is set to
+<code>"confidence"</code>, the function uses a bootstrap approach to
+estimate confidence intervals. By default, it uses 100 bootstrap samples
+and a confidence level of 0.95; however, we may customize these settings
+using the <code>interval_opts</code> argument. In the next example, we
+set the confidence level to 0.99 and the number of bootstrap samples to
+250.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">p_tt_ci2</span> <span class="op">=</span> <span class="fu"><a href="../reference/patternogram.html">patternogram</a></span><span class="op">(</span><span class="va">temp_train</span>, interval <span class="op">=</span> <span class="st">"confidence"</span>,</span>
-<span>                        interval_opts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>conf_level <span class="op">=</span> <span class="fl">0.9</span>, n_bootstrap <span class="op">=</span> <span class="fl">250</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: The specified sample size is larger than number of points. Using all</span></span>
-<span><span class="co">#&gt; points.</span></span>
+<span>                        interval_opts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>conf_level <span class="op">=</span> <span class="fl">0.99</span>, </span>
+<span>                                             n_bootstrap <span class="op">=</span> <span class="fl">250</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">p_tt_ci2</span><span class="op">)</span></span></code></pre></div>
-<p><img src="customizations_files/figure-html/unnamed-chunk-7-1.png" width="700"></p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">p_tt_cloud</span> <span class="op">=</span> <span class="fu"><a href="../reference/patternogram.html">patternogram</a></span><span class="op">(</span><span class="va">temp_train</span>, cloud <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: The specified sample size is larger than number of points. Using all</span></span>
-<span><span class="co">#&gt; points.</span></span>
-<span><span class="va">p_tt_cloud</span></span>
-<span><span class="co">#&gt; # A patternogram (tibble): 18816 by 4 </span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 18,816 × 4</span></span></span>
-<span><span class="co">#&gt;    left  right    dist dissimilarity</span></span>
-<span><span class="co">#&gt;  <span style="color: #BCBCBC;">*</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> 1     2     <span style="text-decoration: underline;">593</span>411.        0.611 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> 1     3     <span style="text-decoration: underline;">133</span>678.        4.78  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> 1     4     <span style="text-decoration: underline;">257</span>536.        0.832 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> 1     5     <span style="text-decoration: underline;">283</span>439.        1.35  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> 1     6     <span style="text-decoration: underline;">230</span>360.        2.35  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> 1     7     <span style="text-decoration: underline;">270</span>287.        3.71  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> 1     8     <span style="text-decoration: underline;">489</span>869.        4.06  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> 1     9     <span style="text-decoration: underline;">434</span>453.        0.432 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> 1     10    <span style="text-decoration: underline;">538</span>924.        0.182 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> 1     11    <span style="text-decoration: underline;">337</span>312.        0.083<span style="text-decoration: underline;">1</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 18,806 more rows</span></span></span>
-<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">p_tt_cloud</span><span class="op">)</span></span></code></pre></div>
-<p><img src="customizations_files/figure-html/unnamed-chunk-8-1.png" width="700"></p>
+<p><img src="customizations_files/figure-html/unnamed-chunk-5-1.png" width="700"></p>
+<p>Now, you may notice that the confidence intervals are wider than in
+the previous example, which is expected when we increase the confidence
+level.</p>
+<!-- where to put/explain cloud? -->
 </div>
 <div class="section level2">
-<h2 id="part-2">Part 2<a class="anchor" aria-label="anchor" href="#part-2"></a>
+<h2 id="patternograms-of-raster-data">Patternograms of raster data<a class="anchor" aria-label="anchor" href="#patternograms-of-raster-data"></a>
 </h2>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<p>The raster variables have different units and ranges of values, so we
+need to standardize them before calculating the patternogram. Otherwise,
+the variables with larger ranges will dominate the dissimilarity
+calculations. To standardize the variables, we can use min-max
+normalization, which rescales the values of each variable to a range
+between 0 and 1.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">nx</span> <span class="op">=</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/minmax.html" class="external-link">minmax</a></span><span class="op">(</span><span class="va">predictors</span><span class="op">)</span>    </span>
 <span><span class="va">pr</span> <span class="op">=</span> <span class="op">(</span><span class="va">predictors</span> <span class="op">-</span> <span class="va">nx</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span><span class="op">)</span> <span class="op">/</span> <span class="op">(</span><span class="va">nx</span><span class="op">[</span><span class="fl">2</span>, <span class="op">]</span> <span class="op">-</span> <span class="va">nx</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<p>Similarly to the point data, we can calculate a patternogram for the
+raster data using the <code><a href="../reference/patternogram.html">patternogram()</a></code> function. In this
+case, the function randomly samples a specified number of points from
+the raster (500, by default) and calculates distances and
+dissimilarities between all pairs of these sampled points.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">p_pr</span> <span class="op">=</span> <span class="fu"><a href="../reference/patternogram.html">patternogram</a></span><span class="op">(</span><span class="va">pr</span><span class="op">)</span></span>
 <span><span class="va">p_pr</span></span>
-<span><span class="co">#&gt; # A patternogram (tibble): 15 by 3 </span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 15 × 3</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A patternogram: 15 × 3</span></span></span>
 <span><span class="co">#&gt;       np   dist dissimilarity</span></span>
 <span><span class="co">#&gt;  <span style="color: #BCBCBC;">*</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>  <span style="text-decoration: underline;">2</span>943  <span style="text-decoration: underline;">31</span>700         0.216</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>  <span style="text-decoration: underline;">7</span>477  <span style="text-decoration: underline;">95</span>200         0.309</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> <span style="text-decoration: underline;">11</span>092 <span style="text-decoration: underline;">158</span>500         0.378</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> <span style="text-decoration: underline;">13</span>270 <span style="text-decoration: underline;">222</span>000         0.430</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> <span style="text-decoration: underline;">14</span>672 <span style="text-decoration: underline;">285</span>500         0.463</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> <span style="text-decoration: underline;">15</span>094 <span style="text-decoration: underline;">348</span>500         0.492</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> <span style="text-decoration: underline;">14</span>939 <span style="text-decoration: underline;">412</span>000         0.513</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> <span style="text-decoration: underline;">13</span>316 <span style="text-decoration: underline;">475</span>500         0.511</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> <span style="text-decoration: underline;">10</span>817 <span style="text-decoration: underline;">539</span>000         0.515</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>  <span style="text-decoration: underline;">8</span>014 <span style="text-decoration: underline;">602</span>500         0.519</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span>  <span style="text-decoration: underline;">5</span>779 <span style="text-decoration: underline;">665</span>500         0.522</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span>  <span style="text-decoration: underline;">3</span>719 <span style="text-decoration: underline;">729</span>000         0.528</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">13</span>  <span style="text-decoration: underline;">2</span>056 <span style="text-decoration: underline;">792</span>500         0.540</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">14</span>  <span style="text-decoration: underline;">1</span>010 <span style="text-decoration: underline;">856</span>000         0.529</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">15</span>   409 <span style="text-decoration: underline;">919</span>500         0.432</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>  <span style="text-decoration: underline;">2</span>804  <span style="text-decoration: underline;">31</span>700         0.204</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>  <span style="text-decoration: underline;">7</span>584  <span style="text-decoration: underline;">95</span>200         0.290</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> <span style="text-decoration: underline;">10</span>666 <span style="text-decoration: underline;">158</span>500         0.363</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> <span style="text-decoration: underline;">12</span>846 <span style="text-decoration: underline;">222</span>000         0.408</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> <span style="text-decoration: underline;">13</span>992 <span style="text-decoration: underline;">285</span>500         0.445</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> <span style="text-decoration: underline;">14</span>420 <span style="text-decoration: underline;">348</span>500         0.472</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> <span style="text-decoration: underline;">14</span>077 <span style="text-decoration: underline;">412</span>000         0.493</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> <span style="text-decoration: underline;">12</span>624 <span style="text-decoration: underline;">475</span>500         0.494</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> <span style="text-decoration: underline;">10</span>989 <span style="text-decoration: underline;">539</span>000         0.487</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>  <span style="text-decoration: underline;">9</span>069 <span style="text-decoration: underline;">602</span>500         0.492</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span>  <span style="text-decoration: underline;">7</span>064 <span style="text-decoration: underline;">665</span>500         0.489</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span>  <span style="text-decoration: underline;">4</span>693 <span style="text-decoration: underline;">729</span>000         0.472</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">13</span>  <span style="text-decoration: underline;">2</span>359 <span style="text-decoration: underline;">792</span>500         0.490</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">14</span>   979 <span style="text-decoration: underline;">856</span>000         0.502</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">15</span>   387 <span style="text-decoration: underline;">919</span>500         0.497</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">p_pr</span><span class="op">)</span></span></code></pre></div>
-<p><img src="customizations_files/figure-html/unnamed-chunk-10-1.png" width="700"></p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">p_pr_250</span> <span class="op">=</span> <span class="fu"><a href="../reference/patternogram.html">patternogram</a></span><span class="op">(</span><span class="va">pr</span>, cutoff <span class="op">=</span> <span class="fl">250000</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">p_pr_250</span><span class="op">)</span></span></code></pre></div>
-<p><img src="customizations_files/figure-html/unnamed-chunk-11-1.png" width="700"></p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">p_pr_dist</span> <span class="op">=</span> <span class="fu"><a href="../reference/patternogram.html">patternogram</a></span><span class="op">(</span><span class="va">pr</span>, dist_fun <span class="op">=</span> <span class="st">"manhattan"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">p_pr_dist</span><span class="op">)</span></span></code></pre></div>
-<p><img src="customizations_files/figure-html/unnamed-chunk-12-1.png" width="700"></p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">p_pr_np</span> <span class="op">=</span> <span class="fu"><a href="../reference/patternogram.html">patternogram</a></span><span class="op">(</span><span class="va">pr</span>, sample_size <span class="op">=</span> <span class="fl">50</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">p_pr_np</span><span class="op">)</span></span></code></pre></div>
-<p><img src="customizations_files/figure-html/unnamed-chunk-13-1.png" width="700"></p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">p_pr_2</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">p_pr</span>, <span class="va">p_pr_np</span><span class="op">)</span></span>
-<span><span class="va">p_pr_2</span></span>
-<span><span class="co">#&gt; # A patternogram (tibble): 30 by 4 </span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 30 × 4</span></span></span>
-<span><span class="co">#&gt;       np   dist dissimilarity id            </span></span>
-<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>  <span style="text-decoration: underline;">2</span>943  <span style="text-decoration: underline;">31</span>700         0.216 patternogram_1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>  <span style="text-decoration: underline;">7</span>477  <span style="text-decoration: underline;">95</span>200         0.309 patternogram_1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> <span style="text-decoration: underline;">11</span>092 <span style="text-decoration: underline;">158</span>500         0.378 patternogram_1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> <span style="text-decoration: underline;">13</span>270 <span style="text-decoration: underline;">222</span>000         0.430 patternogram_1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> <span style="text-decoration: underline;">14</span>672 <span style="text-decoration: underline;">285</span>500         0.463 patternogram_1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> <span style="text-decoration: underline;">15</span>094 <span style="text-decoration: underline;">348</span>500         0.492 patternogram_1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> <span style="text-decoration: underline;">14</span>939 <span style="text-decoration: underline;">412</span>000         0.513 patternogram_1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> <span style="text-decoration: underline;">13</span>316 <span style="text-decoration: underline;">475</span>500         0.511 patternogram_1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> <span style="text-decoration: underline;">10</span>817 <span style="text-decoration: underline;">539</span>000         0.515 patternogram_1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>  <span style="text-decoration: underline;">8</span>014 <span style="text-decoration: underline;">602</span>500         0.519 patternogram_1</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 20 more rows</span></span></span>
-<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">p_pr_2</span><span class="op">)</span></span></code></pre></div>
-<p><img src="customizations_files/figure-html/unnamed-chunk-14-1.png" width="700"></p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<p><img src="customizations_files/figure-html/unnamed-chunk-8-1.png" width="700"></p>
+<p>Here, we also could estimate <strong>confidence intervals</strong> of
+the dissimilarity estimates – we just need to set the
+<code>interval</code> argument to <code>"confidence"</code>.</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">p_pr_ci</span> <span class="op">=</span> <span class="fu"><a href="../reference/patternogram.html">patternogram</a></span><span class="op">(</span><span class="va">pr</span>, interval <span class="op">=</span> <span class="st">"confidence"</span><span class="op">)</span></span>
 <span><span class="va">p_pr_ci</span></span>
-<span><span class="co">#&gt; # A patternogram (tibble): 15 by 5 </span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 15 × 5</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A patternogram: 15 × 5</span></span></span>
 <span><span class="co">#&gt;       np   dist dissimilarity ci_lower ci_upper</span></span>
 <span><span class="co">#&gt;  <span style="color: #BCBCBC;">*</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>  <span style="text-decoration: underline;">2</span>866  <span style="text-decoration: underline;">31</span>700         0.196    0.192    0.200</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>  <span style="text-decoration: underline;">7</span>275  <span style="text-decoration: underline;">95</span>200         0.294    0.291    0.297</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> <span style="text-decoration: underline;">10</span>718 <span style="text-decoration: underline;">158</span>500         0.364    0.361    0.367</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> <span style="text-decoration: underline;">13</span>169 <span style="text-decoration: underline;">222</span>000         0.418    0.415    0.421</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> <span style="text-decoration: underline;">14</span>386 <span style="text-decoration: underline;">285</span>500         0.458    0.455    0.460</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> <span style="text-decoration: underline;">14</span>792 <span style="text-decoration: underline;">348</span>500         0.496    0.493    0.500</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> <span style="text-decoration: underline;">14</span>547 <span style="text-decoration: underline;">412</span>000         0.506    0.502    0.509</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> <span style="text-decoration: underline;">13</span>058 <span style="text-decoration: underline;">475</span>500         0.521    0.519    0.524</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> <span style="text-decoration: underline;">10</span>888 <span style="text-decoration: underline;">539</span>000         0.513    0.510    0.516</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>  <span style="text-decoration: underline;">8</span>341 <span style="text-decoration: underline;">602</span>500         0.500    0.497    0.504</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span>  <span style="text-decoration: underline;">6</span>662 <span style="text-decoration: underline;">665</span>500         0.496    0.491    0.499</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span>  <span style="text-decoration: underline;">4</span>527 <span style="text-decoration: underline;">729</span>000         0.477    0.473    0.482</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">13</span>  <span style="text-decoration: underline;">2</span>308 <span style="text-decoration: underline;">792</span>500         0.483    0.476    0.491</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">14</span>   843 <span style="text-decoration: underline;">856</span>000         0.474    0.463    0.487</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">15</span>   283 <span style="text-decoration: underline;">919</span>500         0.404    0.388    0.420</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>  <span style="text-decoration: underline;">2</span>937  <span style="text-decoration: underline;">31</span>700         0.196    0.192    0.201</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>  <span style="text-decoration: underline;">7</span>506  <span style="text-decoration: underline;">95</span>200         0.286    0.283    0.289</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> <span style="text-decoration: underline;">10</span>604 <span style="text-decoration: underline;">158</span>500         0.363    0.361    0.366</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> <span style="text-decoration: underline;">12</span>836 <span style="text-decoration: underline;">222</span>000         0.413    0.410    0.415</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> <span style="text-decoration: underline;">14</span>521 <span style="text-decoration: underline;">285</span>500         0.466    0.462    0.469</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> <span style="text-decoration: underline;">14</span>954 <span style="text-decoration: underline;">348</span>500         0.499    0.496    0.502</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> <span style="text-decoration: underline;">14</span>711 <span style="text-decoration: underline;">412</span>000         0.515    0.512    0.519</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> <span style="text-decoration: underline;">12</span>963 <span style="text-decoration: underline;">475</span>500         0.512    0.508    0.515</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> <span style="text-decoration: underline;">11</span>187 <span style="text-decoration: underline;">539</span>000         0.496    0.492    0.499</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>  <span style="text-decoration: underline;">8</span>630 <span style="text-decoration: underline;">602</span>500         0.497    0.495    0.502</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span>  <span style="text-decoration: underline;">6</span>118 <span style="text-decoration: underline;">665</span>500         0.507    0.502    0.511</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span>  <span style="text-decoration: underline;">4</span>097 <span style="text-decoration: underline;">729</span>000         0.502    0.498    0.508</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">13</span>  <span style="text-decoration: underline;">2</span>285 <span style="text-decoration: underline;">792</span>500         0.488    0.481    0.495</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">14</span>   993 <span style="text-decoration: underline;">856</span>000         0.469    0.458    0.481</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">15</span>   345 <span style="text-decoration: underline;">919</span>500         0.430    0.409    0.453</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">p_pr_ci</span><span class="op">)</span></span></code></pre></div>
-<p><img src="customizations_files/figure-html/unnamed-chunk-15-1.png" width="700"></p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<p><img src="customizations_files/figure-html/unnamed-chunk-9-1.png" width="700"></p>
+<p>The above patternogram shows the wider confidence intervals for
+larger distances, which is expected because there are fewer point pairs
+at larger distances.</p>
+<p>Another option for estimating intervals is to use <strong>uncertainty
+intervals</strong>, which account for the uncertainty of the sampling
+process. Such intervals are estimated using a Monte Carlo approach,
+where the sampling of points from the raster is repeated multiple times.
+To estimate uncertainty intervals, we need to set the
+<code>interval</code> argument to <code>"uncertainty"</code> and to
+customize the confidence level and the number of Monte Carlo
+repetitions, we may use the <code>interval_opts</code> argument.</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">p_pr_ui</span> <span class="op">=</span> <span class="fu"><a href="../reference/patternogram.html">patternogram</a></span><span class="op">(</span><span class="va">pr</span>, interval <span class="op">=</span> <span class="st">"uncertainty"</span>,</span>
-<span>                       interval_opts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>n_montecarlo <span class="op">=</span> <span class="fl">100</span><span class="op">)</span><span class="op">)</span></span>
+<span>                       interval_opts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>conf_level <span class="op">=</span> <span class="fl">0.99</span>, </span>
+<span>                                            n_montecarlo <span class="op">=</span> <span class="fl">100</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">p_pr_ui</span></span>
-<span><span class="co">#&gt; # A patternogram (tibble): 15 by 5 </span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 15 × 5</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A patternogram: 15 × 5</span></span></span>
 <span><span class="co">#&gt;       np   dist dissimilarity ui_lower ui_upper</span></span>
 <span><span class="co">#&gt;  <span style="color: #BCBCBC;">*</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>  <span style="text-decoration: underline;">2</span>869  <span style="text-decoration: underline;">31</span>700         0.203    0.191    0.212</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>  <span style="text-decoration: underline;">7</span>605  <span style="text-decoration: underline;">95</span>200         0.296    0.287    0.308</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> <span style="text-decoration: underline;">10</span>945 <span style="text-decoration: underline;">158</span>500         0.368    0.360    0.381</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> <span style="text-decoration: underline;">13</span>132 <span style="text-decoration: underline;">222</span>000         0.421    0.409    0.431</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> <span style="text-decoration: underline;">14</span>374 <span style="text-decoration: underline;">285</span>500         0.460    0.443    0.480</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> <span style="text-decoration: underline;">14</span>731 <span style="text-decoration: underline;">348</span>500         0.492    0.468    0.521</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> <span style="text-decoration: underline;">14</span>191 <span style="text-decoration: underline;">412</span>000         0.510    0.485    0.538</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> <span style="text-decoration: underline;">12</span>872 <span style="text-decoration: underline;">475</span>500         0.514    0.493    0.533</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> <span style="text-decoration: underline;">10</span>928 <span style="text-decoration: underline;">539</span>000         0.510    0.492    0.531</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>  <span style="text-decoration: underline;">8</span>645 <span style="text-decoration: underline;">602</span>500         0.508    0.489    0.526</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span>  <span style="text-decoration: underline;">6</span>488 <span style="text-decoration: underline;">665</span>500         0.507    0.489    0.526</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span>  <span style="text-decoration: underline;">4</span>244 <span style="text-decoration: underline;">729</span>000         0.499    0.475    0.525</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">13</span>  <span style="text-decoration: underline;">2</span>288 <span style="text-decoration: underline;">792</span>500         0.493    0.465    0.527</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">14</span>   978 <span style="text-decoration: underline;">856</span>000         0.495    0.449    0.563</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">15</span>   363 <span style="text-decoration: underline;">919</span>500         0.456    0.379    0.556</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>  <span style="text-decoration: underline;">2</span>872  <span style="text-decoration: underline;">31</span>700         0.204    0.192    0.222</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>  <span style="text-decoration: underline;">7</span>623  <span style="text-decoration: underline;">95</span>200         0.297    0.286    0.312</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> <span style="text-decoration: underline;">10</span>998 <span style="text-decoration: underline;">158</span>500         0.369    0.353    0.385</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> <span style="text-decoration: underline;">13</span>131 <span style="text-decoration: underline;">222</span>000         0.422    0.410    0.435</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> <span style="text-decoration: underline;">14</span>415 <span style="text-decoration: underline;">285</span>500         0.460    0.444    0.485</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> <span style="text-decoration: underline;">14</span>741 <span style="text-decoration: underline;">348</span>500         0.492    0.466    0.525</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> <span style="text-decoration: underline;">14</span>170 <span style="text-decoration: underline;">412</span>000         0.510    0.482    0.542</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> <span style="text-decoration: underline;">12</span>862 <span style="text-decoration: underline;">475</span>500         0.514    0.484    0.537</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> <span style="text-decoration: underline;">10</span>917 <span style="text-decoration: underline;">539</span>000         0.510    0.484    0.533</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>  <span style="text-decoration: underline;">8</span>666 <span style="text-decoration: underline;">602</span>500         0.506    0.478    0.528</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span>  <span style="text-decoration: underline;">6</span>481 <span style="text-decoration: underline;">665</span>500         0.504    0.476    0.537</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span>  <span style="text-decoration: underline;">4</span>226 <span style="text-decoration: underline;">729</span>000         0.494    0.459    0.529</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">13</span>  <span style="text-decoration: underline;">2</span>255 <span style="text-decoration: underline;">792</span>500         0.488    0.447    0.525</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">14</span>   958 <span style="text-decoration: underline;">856</span>000         0.493    0.435    0.572</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">15</span>   343 <span style="text-decoration: underline;">919</span>500         0.458    0.378    0.564</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">p_pr_ui</span><span class="op">)</span></span></code></pre></div>
-<p><img src="customizations_files/figure-html/unnamed-chunk-16-1.png" width="700"></p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">p_pr_l</span> <span class="op">=</span> <span class="fu"><a href="../reference/patternogram.html">patternogram</a></span><span class="op">(</span><span class="va">pr</span>, group <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">p_pr_l</span><span class="op">)</span></span></code></pre></div>
-<p><img src="customizations_files/figure-html/unnamed-chunk-17-1.png" width="700"></p>
+<p><img src="customizations_files/figure-html/unnamed-chunk-10-1.png" width="700"></p>
+</div>
+<div class="section level2">
+<h2 id="combining-patternograms">Combining patternograms<a class="anchor" aria-label="anchor" href="#combining-patternograms"></a>
+</h2>
+<p>We may want to compare patternograms calculated for different
+datasets or using different settings. To present such comparisons, let’s
+split the <code>temp_train</code> dataset into two subsets: one with
+points located in the northern part of Spain and another one with points
+located in the southern part of Spain.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">temp_train_north</span> <span class="op">=</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">temp_train</span>, <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_coordinates.html" class="external-link">st_coordinates</a></span><span class="op">(</span><span class="va">temp_train</span><span class="op">)</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span> <span class="op">&gt;</span> <span class="fl">4420000</span><span class="op">)</span></span>
+<span><span class="va">temp_train_south</span> <span class="op">=</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">temp_train</span>, <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_coordinates.html" class="external-link">st_coordinates</a></span><span class="op">(</span><span class="va">temp_train</span><span class="op">)</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span> <span class="op">&lt;=</span> <span class="fl">4420000</span><span class="op">)</span></span></code></pre></div>
+<p>Next, we calculate patternograms for these two subsets.</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">p_tt_north</span> <span class="op">=</span> <span class="fu"><a href="../reference/patternogram.html">patternogram</a></span><span class="op">(</span><span class="va">temp_train_north</span>, interval <span class="op">=</span> <span class="st">"confidence"</span><span class="op">)</span></span>
+<span><span class="va">p_tt_south</span> <span class="op">=</span> <span class="fu"><a href="../reference/patternogram.html">patternogram</a></span><span class="op">(</span><span class="va">temp_train_south</span>, interval <span class="op">=</span> <span class="st">"confidence"</span><span class="op">)</span></span></code></pre></div>
+<p>The resulting patternograms can be combined into a single object
+using the <code><a href="https://rdrr.io/r/base/c.html" class="external-link">c()</a></code> function. It accepts multiple patternogram
+objects and an optional <code>ids</code> argument, which allows us to
+specify labels for each patternogram. The resulting object is also of
+the <code>patternogram</code> class and can be plotted using the
+<code><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot()</a></code> function.</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">p_pr_both</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">p_tt_north</span>, <span class="va">p_tt_south</span>, ids <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"north"</span>, <span class="st">"south"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">p_pr_both</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A patternogram: 30 × 6</span></span></span>
+<span><span class="co">#&gt;       np   dist dissimilarity ci_lower ci_upper id   </span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>   111  <span style="text-decoration: underline;">21</span>300          1.29     1.07     1.49 north</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>   333  <span style="text-decoration: underline;">63</span>900          2.45     2.23     2.68 north</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>   390 <span style="text-decoration: underline;">106</span>600          2.43     2.28     2.57 north</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>   499 <span style="text-decoration: underline;">149</span>000          2.59     2.43     2.73 north</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>   581 <span style="text-decoration: underline;">191</span>500          2.76     2.61     2.94 north</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>   634 <span style="text-decoration: underline;">234</span>500          2.74     2.56     2.89 north</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>   687 <span style="text-decoration: underline;">277</span>000          2.69     2.56     2.83 north</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>   701 <span style="text-decoration: underline;">319</span>500          2.89     2.74     3.05 north</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>   619 <span style="text-decoration: underline;">362</span>500          2.92     2.76     3.10 north</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>   514 <span style="text-decoration: underline;">405</span>000          2.91     2.75     3.11 north</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 20 more rows</span></span></span>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">p_pr_both</span><span class="op">)</span></span></code></pre></div>
+<p><img src="customizations_files/figure-html/unnamed-chunk-13-1.png" width="700"></p>
+<p>The resulting plot shows that the dissimilarity estimates for the
+northern part of Spain are generally higher than those for the southern
+part. It means that the temperature values in the northern part of Spain
+are more diverse than those in the southern part. This observation may
+be related to the fact that the northern part of Spain has a more varied
+terrain, including mountains and coastal areas, which can lead to
+greater temperature variability.</p>
 </div>
   </div>
 

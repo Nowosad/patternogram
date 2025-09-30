@@ -52,7 +52,7 @@
       <a href="../articles/an-introduction-to-patternogram.html">An introduction to patternogram</a>
     </li>
     <li>
-      <a href="../articles/customizations.html">Customizations in patternogram</a>
+      <a href="../articles/customizations.html">Customizations and additional features of the patternogram package</a>
     </li>
     <li>
       <a href="../articles/spatial-machine-learning.html">An introduction to patternogram</a>
@@ -87,7 +87,7 @@
                         <h4 data-toc-skip class="author">Jakub
 Nowosad</h4>
             
-            <h4 data-toc-skip class="date">2025-09-29</h4>
+            <h4 data-toc-skip class="date">2025-09-30</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Nowosad/patternogram/blob/main/vignettes/articles/an-introduction-to-patternogram.Rmd" class="external-link"><code>vignettes/articles/an-introduction-to-patternogram.Rmd</code></a></small>
       <div class="hidden name"><code>an-introduction-to-patternogram.Rmd</code></div>
@@ -123,11 +123,8 @@ distances, and then groups these dissimilarity estimates into distance
 intervals to create a patternogram.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">p_tt</span> <span class="op">=</span> <span class="fu"><a href="../reference/patternogram.html">patternogram</a></span><span class="op">(</span><span class="va">temp_train</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: The specified sample size is larger than number of points. Using all</span></span>
-<span><span class="co">#&gt; points.</span></span>
 <span><span class="va">p_tt</span></span>
-<span><span class="co">#&gt; # A patternogram (tibble): 15 by 3 </span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 15 × 3</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A patternogram: 15 × 3</span></span></span>
 <span><span class="co">#&gt;       np   dist dissimilarity</span></span>
 <span><span class="co">#&gt;  <span style="color: #BCBCBC;">*</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>   334  <span style="text-decoration: underline;">30</span>200          1.72</span></span>
@@ -162,8 +159,6 @@ argument to limit the maximum distance considered in the analysis. This
 allows us to focus on smaller distances.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">p_tt250</span> <span class="op">=</span> <span class="fu"><a href="../reference/patternogram.html">patternogram</a></span><span class="op">(</span><span class="va">temp_train</span>, cutoff <span class="op">=</span> <span class="fl">250000</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: The specified sample size is larger than number of points. Using all</span></span>
-<span><span class="co">#&gt; points.</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">p_tt250</span><span class="op">)</span></span></code></pre></div>
 <p><img src="an-introduction-to-patternogram_files/figure-html/unnamed-chunk-5-1.png" width="700"></p>
 <p>Now, we may notice that the dissimilarity increases quickly up to
@@ -196,8 +191,7 @@ data using the same <code><a href="../reference/patternogram.html">patternogram(
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">p_pr</span> <span class="op">=</span> <span class="fu"><a href="../reference/patternogram.html">patternogram</a></span><span class="op">(</span><span class="va">pr</span><span class="op">)</span></span>
 <span><span class="va">p_pr</span></span>
-<span><span class="co">#&gt; # A patternogram (tibble): 15 by 3 </span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 15 × 3</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A patternogram: 15 × 3</span></span></span>
 <span><span class="co">#&gt;       np   dist dissimilarity</span></span>
 <span><span class="co">#&gt;  <span style="color: #BCBCBC;">*</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>  <span style="text-decoration: underline;">2</span>897  <span style="text-decoration: underline;">31</span>700         0.205</span></span>
@@ -255,8 +249,7 @@ in the raster dataset. <!-- explain --></p>
 </h2>
 <p>This document provided a brief introduction to the
 <strong>patternogram</strong> package and its main functions. For more
-expanded examples and explanations, see the second vignette: <a href="https://jakubnowosad.com/vignettes/articles/customizations.html" class="external-link">Exploring
-spatial patterns with patternograms</a>.</p>
+expanded examples and explanations, see the second vignette: <a href="customizations.html">Customizations in patternogram</a>.</p>
 </div>
   </div>
 
