@@ -1,5 +1,5 @@
-#' @exportS3Method
-print.patternogram = function(x, ...) {
-  cat("# A patternogram (tibble):", nrow(x), "by", ncol(x), "\n")
-  NextMethod("print")  # falls back to tibble printing
+#' @exportS3Method pillar::tbl_sum
+tbl_sum.patternogram = function(x, ...) {
+  # this replaces "# A tibble: 15 × 3"
+  c("A patternogram" = paste0(nrow(x), " \u00d7 ", ncol(x)))
 }
