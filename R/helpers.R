@@ -36,13 +36,13 @@ create_sample_points = function(x, sample_size, ...){
   # if (!missing(approach) && approach == "motif"){
   # raster_pattern = create_sample_points_motif(x = x, sample_size = sample_size, ...)
   # } else {
-  raster_pattern = create_sample_points_terra(x = x, sample_size = sample_size)
+  raster_pattern = create_sample_points_terra(x = x, sample_size = sample_size, ...)
   # }
   return(raster_pattern)
 }
 
 
-create_sample_points_terra = function(x, sample_size){
+create_sample_points_terra = function(x, sample_size, warning){
   if (inherits(x, "SpatRaster")){
     if (sample_size <= 1){
       sample_size = ceiling(terra::ncell(x) * sample_size)
@@ -55,8 +55,10 @@ create_sample_points_terra = function(x, sample_size){
       sample_size = ceiling(nrow(x) * sample_size)
     } else if (sample_size > nrow(x)){
       sample_size = nrow(x)
-      warning("The specified sample size is larger than number of points. Using all points.",
-              call. = FALSE)
+      if (warning || missing(warning)){
+        warning("The specified sample size is larger than number of points. Using all points.",
+                call. = FALSE)
+      }
     }
     selected_points = x[sample(seq_len(nrow(x)), size = sample_size), ]
   }

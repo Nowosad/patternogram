@@ -39,6 +39,9 @@ patternogram = function(x, cutoff, breaks = 15, dist_fun = "euclidean",
                                               n_bootstrap = 100,
                                               n_montecarlo = 100),
                          ...) {
+
+  do_warn = ifelse(missing(sample_size), FALSE, TRUE)
+
   if (missing(cutoff)){
     cutoff = get_cutoff(x)
   }
@@ -67,10 +70,12 @@ patternogram = function(x, cutoff, breaks = 15, dist_fun = "euclidean",
   if (n_montecarlo == 1){
     if (inherits(x, "SpatRaster")){
       sample_points = create_sample_points(x = x,
-                                           sample_size = sample_size)
+                                           sample_size = sample_size,
+                                           warning = do_warn)
     } else {
       sample_points = create_sample_points(x = sample_points_base,
-                                           sample_size = sample_size)
+                                           sample_size = sample_size,
+                                           warning = do_warn)
     }
     result = single_patternogram(sample_points, cutoff = cutoff, breaks = breaks,
                         dist_fun = dist_fun, cloud = cloud,
