@@ -19,6 +19,7 @@ Imports:
   tidyr,
   ggplot2,
   philentropy,
+  pillar,
   rlang,
   sf,
   terra
