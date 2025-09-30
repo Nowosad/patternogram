@@ -1,5 +1,5 @@
 ---
-title: "An introduction to patternogram"
+title: "Patternograms as a diagnostic tool in spatial machine learning"
 author: Jakub Nowosad
 date: "`r Sys.Date()`"
 ---
@@ -21,6 +21,8 @@ library(terra)
 library(rpart)
 ```
 
+<!-- intro -->
+
 Next, we load two spatial datasets.
 The first one is a spatial vector point dataset with annual average air temperature measurements in Celsius for Spain in 2019.
 The second one is a raster dataset with predictors, such as population density (`popdens`), distance to the coast (`coast`), elevation (`dem`), a satellite-based Normalized Difference Vegetation Index (`ndvi`), and annual average composites of the Land Surface Temperature product for day (`lst_day`) and night (`lst_night`).
@@ -34,8 +36,57 @@ plot(predictors, axes = FALSE)
 ```
 
 ```{r}
-temp = extract(predictors, temp_train, ID = FALSE)
+p_temp_train = patternogram(temp_train)
+plot(p_temp_train)
+```
+
+
+```{r}
+nx = minmax(predictors)    
+pr = (predictors - nx[1, ]) / (nx[2, ] - nx[1, ])
+```
+
+```{r}
+temp = extract(pr, temp_train, ID = FALSE)
 temp_train_all = cbind(temp_train, temp)
+```
+
+```{r}
+p_train_pred = patternogram(temp_train_all[-1])
+plot(p_train_pred)
+```
+
+```{r}
+p_pr = patternogram(pr)
+plot(p_pr)
+```
+
+```{r}
+plot(c(p_train_pred, p_pr))
+```
+
+
+```{r}
+p_train_pred2 = patternogram(temp_train_all[-1], group = TRUE)
+plot(p_train_pred2)
+```
+
+```{r}
+p_pr2 = patternogram(pr, group = TRUE)
+plot(p_pr2)
+```
+
+```{r}
+plot(c(p_train_pred2, p_pr2))
+```
+
+```{r}
+library(ggplot2)
+autoplot(c(p_train_pred2, p_pr2)) + 
+  facet_wrap(~group)
+```
+
+```{r}
 rpart_model = rpart(temp ~ ., data = st_drop_geometry(temp_train_all))
 rpart_model
 ```
@@ -47,12 +98,7 @@ var_imp
 ```
 
 ```{r}
-nx = minmax(predictors)    
-pr = (predictors - nx[1, ]) / (nx[2, ] - nx[1, ])
 pr = pr[[names(var_imp)]]
-```
-
-```{r}
 pr_weighted = pr * var_imp
 panel(pr_weighted, axes = FALSE)
 ```
@@ -65,38 +111,16 @@ plot(p_12)
 ```
 
 ```{r}
-p1_250 = patternogram(pr, cutoff = 250000)
-p2_250 = patternogram(pr_weighted, cutoff = 250000)
-p_12_250 = c(p1_250, p2_250, ids = c("unweighted", "weighted"))
-plot(p_12_250)
+prediction = predict(predictors, rpart_model, na.rm = TRUE)
 ```
 
 ```{r}
-p_tt = patternogram(temp_train)
-plot(p_tt)
+#| layout-ncol: 2
+plot(temp_train)
+plot(prediction)
 ```
 
 ```{r}
-p_all = c(p1, p2, p_tt, ids = c("unweighted", "weighted", "temperature"))
-plot(p_all)
+p_prediction = patternogram(prediction)
+plot(c(p_temp_train, p_prediction, ids = c("stations", "prediction")))
 ```
-
-```{r}
-#| eval: false
-#| echo: false
-library(dplyr)
-df = p_all
-df_scaled = df |>
-  group_by(id) |>
-  mutate(dissimilarity = (dissimilarity - min(dissimilarity)) / 
-                                  (max(dissimilarity) - min(dissimilarity))) |>
-  ungroup()
-class(df_scaled) = c("patternogram", class(df_scaled))
-plot(df_scaled)
-```
-
-```{r}
-p3 = patternogram(pr_weighted, group = TRUE)
-plot(p3)
-```
-
