@@ -10,10 +10,10 @@ patternogram(
   breaks = 15,
   dist_fun = "euclidean",
   sample_size = 500,
-  group = NULL,
-  cloud = FALSE,
   interval = c("none", "confidence", "uncertainty"),
   interval_opts = list(conf_level = 0.95, n_bootstrap = 100, n_montecarlo = 100),
+  group = NULL,
+  cloud = FALSE,
   ...
 )
 }
@@ -29,13 +29,13 @@ By default: a square root of the raster/point data area}
 
 \item{sample_size}{Only used when \code{x} is raster. Proportion of the cells/points to be used in calculations. Value between 0 and 1. It is also possible to specify an integer larger than 1, in which case the specified number of cells/points will be used in calculations by random sampling. By default: 500}
 
-\item{group}{Optional; name of a column in the point attribute table to calculate separate patternograms for different categories or ranges of a numeric variable. If the specified column is numeric, it will be converted to a factor using the \code{base::cut()} function. By default: NULL}
-
-\item{cloud}{Logical; if TRUE, return the patternogram cloud}
-
 \item{interval}{Type of interval to be calculated. Options are "none" (default), "confidence" (confidence intervals around the mean dissimilarity estimate), and "uncertainty" (uncertainty intervals around the dissimilarity estimates). The confidence intervals are calculated using a bootstrap approach, while the uncertainty intervals are calculated using a Monte Carlo approach. Note that uncertainty intervals require more computations than confidence intervals. Also, confidence intervals are only available when \code{cloud = FALSE}.}
 
 \item{interval_opts}{A list of options for interval calculations. Possible options are (a) \code{conf_level}: confidence level for intervals (default: 0.95), (b) \code{n_bootstrap}: number of bootstrap samples for confidence intervals (default: 100), and (c) \code{n_montecarlo}: number of Monte Carlo repetitions for uncertainty intervals (default: 100)}
+
+\item{group}{Optional; name of a column in the point attribute table to calculate separate patternograms for different categories or ranges of a numeric variable. If the specified column is numeric, it will be converted to a factor using the \code{base::cut()} function. By default: NULL}
+
+\item{cloud}{Logical; if TRUE, return the patternogram cloud}
 
 \item{...}{Not used}
 }
