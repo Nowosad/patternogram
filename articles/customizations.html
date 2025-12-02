@@ -32,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">patternogram</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.4</span>
       </span>
     </div>
 
@@ -85,7 +85,7 @@ patternogram package</h1>
                         <h4 data-toc-skip class="author">Jakub
 Nowosad</h4>
             
-            <h4 data-toc-skip class="date">2025-10-01</h4>
+            <h4 data-toc-skip class="date">2025-12-02</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Nowosad/patternogram/blob/main/vignettes/articles/customizations.Rmd" class="external-link"><code>vignettes/articles/customizations.Rmd</code></a></small>
       <div class="hidden name"><code>customizations.Rmd</code></div>
@@ -117,12 +117,12 @@ Temperature product for day (<code>lst_day</code>) and night
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">temp_train</span> <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html" class="external-link">read_sf</a></span><span class="op">(</span><span class="st">"/vsicurl/https://github.com/Nowosad/IIIRqueR_workshop_materials/raw/refs/heads/main/data/temp_train.gpkg"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">temp_train</span><span class="op">)</span></span></code></pre></div>
-<p><img src="customizations_files/figure-html/unnamed-chunk-2-1.png" width="700"></p>
+<p><img src="customizations_files/figure-html/unnamed-chunk-2-1.png" class="r-plt" width="700"></p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="va">predictors</span> <span class="op">=</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="st">"/vsicurl/https://github.com/Nowosad/IIIRqueR_workshop_materials/raw/refs/heads/main/data/predictors.tif"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">predictors</span>, axes <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="customizations_files/figure-html/unnamed-chunk-2-2.png" width="700"></p>
+<p><img src="customizations_files/figure-html/unnamed-chunk-2-2.png" class="r-plt" width="700"></p>
 <div class="section level2">
 <h2 id="patternograms-of-point-data">Patternograms of point data<a class="anchor" aria-label="anchor" href="#patternograms-of-point-data"></a>
 </h2>
@@ -134,6 +134,7 @@ points, the function calculates distances between all pairs of points
 and dissimilarities between their values.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">p_tt</span> <span class="op">=</span> <span class="fu"><a href="../reference/patternogram.html">patternogram</a></span><span class="op">(</span><span class="va">temp_train</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 195 vectors</span></span>
 <span><span class="va">p_tt</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A patternogram: 15 × 3</span></span></span>
 <span><span class="co">#&gt;       np   dist dissimilarity</span></span>
@@ -154,7 +155,7 @@ and dissimilarities between their values.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">14</span>   467 <span style="text-decoration: underline;">815</span>000          3.89</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">15</span>   215 <span style="text-decoration: underline;">875</span>500          3.52</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">p_tt</span><span class="op">)</span></span></code></pre></div>
-<p><img src="customizations_files/figure-html/unnamed-chunk-3-1.png" width="700"></p>
+<p><img src="customizations_files/figure-html/unnamed-chunk-3-1.png" class="r-plt" width="700"></p>
 <p>The result of plotting a patternogram is a scatter plot showing the
 dissimilarity of values for different spatial distances. However, often
 our point datasets are a sample of a larger population and, moreover,
@@ -164,6 +165,7 @@ of the dissimilarity estimates. To do this, we can set the
 <code>interval</code> argument to <code>"confidence"</code>.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">p_tt_ci</span> <span class="op">=</span> <span class="fu"><a href="../reference/patternogram.html">patternogram</a></span><span class="op">(</span><span class="va">temp_train</span>, interval <span class="op">=</span> <span class="st">"confidence"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 195 vectors</span></span>
 <span><span class="va">p_tt_ci</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A patternogram: 15 × 5</span></span></span>
 <span><span class="co">#&gt;       np   dist dissimilarity ci_lower ci_upper</span></span>
@@ -184,7 +186,7 @@ of the dissimilarity estimates. To do this, we can set the
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">14</span>   467 <span style="text-decoration: underline;">815</span>000          3.89     3.72     4.08</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">15</span>   215 <span style="text-decoration: underline;">875</span>500          3.52     3.24     3.81</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">p_tt_ci</span><span class="op">)</span></span></code></pre></div>
-<p><img src="customizations_files/figure-html/unnamed-chunk-4-1.png" width="700"></p>
+<p><img src="customizations_files/figure-html/unnamed-chunk-4-1.png" class="r-plt" width="700"></p>
 <p>Now, the resulting patternogram contains two additional columns with
 lower and upper confidence intervals of the dissimilarity estimates
 (<code>ci_lower</code> and <code>ci_upper</code>). These intervals are
@@ -200,8 +202,9 @@ set the confidence level to 0.99 and the number of bootstrap samples to
 <code class="sourceCode R"><span><span class="va">p_tt_ci2</span> <span class="op">=</span> <span class="fu"><a href="../reference/patternogram.html">patternogram</a></span><span class="op">(</span><span class="va">temp_train</span>, interval <span class="op">=</span> <span class="st">"confidence"</span>,</span>
 <span>                        interval_opts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>conf_level <span class="op">=</span> <span class="fl">0.99</span>, </span>
 <span>                                             n_bootstrap <span class="op">=</span> <span class="fl">250</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 195 vectors</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">p_tt_ci2</span><span class="op">)</span></span></code></pre></div>
-<p><img src="customizations_files/figure-html/unnamed-chunk-5-1.png" width="700"></p>
+<p><img src="customizations_files/figure-html/unnamed-chunk-5-1.png" class="r-plt" width="700"></p>
 <p>Now, you may notice that the confidence intervals are wider than in
 the previous example, which is expected when we increase the confidence
 level.</p>
@@ -226,6 +229,7 @@ the raster (500, by default) and calculates distances and
 dissimilarities between all pairs of these sampled points.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">p_pr</span> <span class="op">=</span> <span class="fu"><a href="../reference/patternogram.html">patternogram</a></span><span class="op">(</span><span class="va">pr</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
 <span><span class="va">p_pr</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A patternogram: 15 × 3</span></span></span>
 <span><span class="co">#&gt;       np   dist dissimilarity</span></span>
@@ -246,12 +250,13 @@ dissimilarities between all pairs of these sampled points.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">14</span>   979 <span style="text-decoration: underline;">856</span>000         0.502</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">15</span>   387 <span style="text-decoration: underline;">919</span>500         0.497</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">p_pr</span><span class="op">)</span></span></code></pre></div>
-<p><img src="customizations_files/figure-html/unnamed-chunk-8-1.png" width="700"></p>
+<p><img src="customizations_files/figure-html/unnamed-chunk-8-1.png" class="r-plt" width="700"></p>
 <p>Here, we also could estimate <strong>confidence intervals</strong> of
 the dissimilarity estimates – we just need to set the
 <code>interval</code> argument to <code>"confidence"</code>.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">p_pr_ci</span> <span class="op">=</span> <span class="fu"><a href="../reference/patternogram.html">patternogram</a></span><span class="op">(</span><span class="va">pr</span>, interval <span class="op">=</span> <span class="st">"confidence"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
 <span><span class="va">p_pr_ci</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A patternogram: 15 × 5</span></span></span>
 <span><span class="co">#&gt;       np   dist dissimilarity ci_lower ci_upper</span></span>
@@ -272,7 +277,7 @@ the dissimilarity estimates – we just need to set the
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">14</span>   993 <span style="text-decoration: underline;">856</span>000         0.469    0.458    0.481</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">15</span>   345 <span style="text-decoration: underline;">919</span>500         0.430    0.409    0.453</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">p_pr_ci</span><span class="op">)</span></span></code></pre></div>
-<p><img src="customizations_files/figure-html/unnamed-chunk-9-1.png" width="700"></p>
+<p><img src="customizations_files/figure-html/unnamed-chunk-9-1.png" class="r-plt" width="700"></p>
 <p>The above patternogram shows the wider confidence intervals for
 larger distances, which is expected because there are fewer point pairs
 at larger distances.</p>
@@ -288,6 +293,106 @@ repetitions, we may use the <code>interval_opts</code> argument.</p>
 <code class="sourceCode R"><span><span class="va">p_pr_ui</span> <span class="op">=</span> <span class="fu"><a href="../reference/patternogram.html">patternogram</a></span><span class="op">(</span><span class="va">pr</span>, interval <span class="op">=</span> <span class="st">"uncertainty"</span>,</span>
 <span>                       interval_opts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>conf_level <span class="op">=</span> <span class="fl">0.99</span>, </span>
 <span>                                            n_montecarlo <span class="op">=</span> <span class="fl">100</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
 <span><span class="va">p_pr_ui</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A patternogram: 15 × 5</span></span></span>
 <span><span class="co">#&gt;       np   dist dissimilarity ui_lower ui_upper</span></span>
@@ -308,7 +413,7 @@ repetitions, we may use the <code>interval_opts</code> argument.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">14</span>   958 <span style="text-decoration: underline;">856</span>000         0.493    0.435    0.572</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">15</span>   343 <span style="text-decoration: underline;">919</span>500         0.458    0.378    0.564</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">p_pr_ui</span><span class="op">)</span></span></code></pre></div>
-<p><img src="customizations_files/figure-html/unnamed-chunk-10-1.png" width="700"></p>
+<p><img src="customizations_files/figure-html/unnamed-chunk-10-1.png" class="r-plt" width="700"></p>
 </div>
 <div class="section level2">
 <h2 id="combining-patternograms">Combining patternograms<a class="anchor" aria-label="anchor" href="#combining-patternograms"></a>
@@ -324,7 +429,9 @@ located in the southern part of Spain.</p>
 <p>Next, we calculate patternograms for these two subsets.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">p_tt_north</span> <span class="op">=</span> <span class="fu"><a href="../reference/patternogram.html">patternogram</a></span><span class="op">(</span><span class="va">temp_train_north</span>, interval <span class="op">=</span> <span class="st">"confidence"</span><span class="op">)</span></span>
-<span><span class="va">p_tt_south</span> <span class="op">=</span> <span class="fu"><a href="../reference/patternogram.html">patternogram</a></span><span class="op">(</span><span class="va">temp_train_south</span>, interval <span class="op">=</span> <span class="st">"confidence"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 120 vectors</span></span>
+<span><span class="va">p_tt_south</span> <span class="op">=</span> <span class="fu"><a href="../reference/patternogram.html">patternogram</a></span><span class="op">(</span><span class="va">temp_train_south</span>, interval <span class="op">=</span> <span class="st">"confidence"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 75 vectors</span></span></code></pre></div>
 <p>The resulting patternograms can be combined into a single object
 using the <code><a href="../reference/bind_patternogram.html">bind_patternogram()</a></code> function. It accepts multiple
 patternogram objects and an optional <code>ids</code> argument, which
@@ -349,7 +456,7 @@ the <code><a href="https://rspatial.github.io/terra/reference/plot.html" class="
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>   514 <span style="text-decoration: underline;">405</span>000          2.91     2.75     3.11 north</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 20 more rows</span></span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">p_pr_both</span><span class="op">)</span></span></code></pre></div>
-<p><img src="customizations_files/figure-html/unnamed-chunk-13-1.png" width="700"></p>
+<p><img src="customizations_files/figure-html/unnamed-chunk-13-1.png" class="r-plt" width="700"></p>
 <p>The resulting plot shows that the dissimilarity estimates for the
 northern part of Spain are generally higher than those for the southern
 part. It means that the temperature values in the northern part of Spain
@@ -375,7 +482,7 @@ greater temperature variability.</p>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
       </footer>

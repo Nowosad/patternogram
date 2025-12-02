@@ -32,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">patternogram</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.4</span>
       </span>
     </div>
 
@@ -84,7 +84,7 @@
                         <h4 data-toc-skip class="author">Jakub
 Nowosad</h4>
             
-            <h4 data-toc-skip class="date">2025-10-01</h4>
+            <h4 data-toc-skip class="date">2025-12-02</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Nowosad/patternogram/blob/main/vignettes/articles/an-introduction-to-patternogram.Rmd" class="external-link"><code>vignettes/articles/an-introduction-to-patternogram.Rmd</code></a></small>
       <div class="hidden name"><code>an-introduction-to-patternogram.Rmd</code></div>
@@ -113,13 +113,14 @@ average air temperature measurements in Celsius for Spain in 2019.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">temp_train</span> <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html" class="external-link">read_sf</a></span><span class="op">(</span><span class="st">"/vsicurl/https://github.com/Nowosad/IIIRqueR_workshop_materials/raw/refs/heads/main/data/temp_train.gpkg"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">temp_train</span><span class="op">)</span></span></code></pre></div>
-<p><img src="an-introduction-to-patternogram_files/figure-html/unnamed-chunk-2-1.png" width="700"></p>
+<p><img src="an-introduction-to-patternogram_files/figure-html/unnamed-chunk-2-1.png" class="r-plt" width="700"></p>
 <p>The primary function of the package is <code><a href="../reference/patternogram.html">patternogram()</a></code>.
 It calculates the dissimilarity between pairs of points at different
 distances, and then groups these dissimilarity estimates into distance
 intervals to create a patternogram.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">p_tt</span> <span class="op">=</span> <span class="fu"><a href="../reference/patternogram.html">patternogram</a></span><span class="op">(</span><span class="va">temp_train</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 195 vectors</span></span>
 <span><span class="va">p_tt</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A patternogram: 15 × 3</span></span></span>
 <span><span class="co">#&gt;       np   dist dissimilarity</span></span>
@@ -146,7 +147,7 @@ estimate, and <code>dissimilarity</code>: the dissimilarity estimate.
 This object can be plotted using the <code><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot()</a></code> function.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">p_tt</span><span class="op">)</span></span></code></pre></div>
-<p><img src="an-introduction-to-patternogram_files/figure-html/unnamed-chunk-4-1.png" width="700"></p>
+<p><img src="an-introduction-to-patternogram_files/figure-html/unnamed-chunk-4-1.png" class="r-plt" width="700"></p>
 <p>Such a plot represents a relationship between the distance between
 points (x-axis) and the dissimilarity of their values (y-axis). Here, we
 can see that the dissimilarity of temperature values increases with
@@ -156,8 +157,9 @@ argument to limit the maximum distance considered in the analysis. This
 allows us to focus on smaller distances.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">p_tt250</span> <span class="op">=</span> <span class="fu"><a href="../reference/patternogram.html">patternogram</a></span><span class="op">(</span><span class="va">temp_train</span>, cutoff <span class="op">=</span> <span class="fl">250000</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 195 vectors</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">p_tt250</span><span class="op">)</span></span></code></pre></div>
-<p><img src="an-introduction-to-patternogram_files/figure-html/unnamed-chunk-5-1.png" width="700"></p>
+<p><img src="an-introduction-to-patternogram_files/figure-html/unnamed-chunk-5-1.png" class="r-plt" width="700"></p>
 <p>Now, we may notice that the dissimilarity increases quickly up to
 around 60 km and then still increases, but at a slower rate.</p>
 </div>
@@ -173,7 +175,7 @@ average composites of the Land Surface Temperature product for day
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">predictors</span> <span class="op">=</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="st">"/vsicurl/https://github.com/Nowosad/IIIRqueR_workshop_materials/raw/refs/heads/main/data/predictors.tif"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">predictors</span>, axes <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="an-introduction-to-patternogram_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
+<p><img src="an-introduction-to-patternogram_files/figure-html/unnamed-chunk-6-1.png" class="r-plt" width="700"></p>
 <p>These variables have different units and ranges of values, so we need
 to standardize them before calculating the patternogram. Otherwise, the
 variables with larger ranges will dominate the dissimilarity
@@ -187,6 +189,7 @@ between 0 and 1.</p>
 data using the same <code><a href="../reference/patternogram.html">patternogram()</a></code> function.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">p_pr</span> <span class="op">=</span> <span class="fu"><a href="../reference/patternogram.html">patternogram</a></span><span class="op">(</span><span class="va">pr</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
 <span><span class="va">p_pr</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A patternogram: 15 × 3</span></span></span>
 <span><span class="co">#&gt;       np   dist dissimilarity</span></span>
@@ -207,7 +210,7 @@ data using the same <code><a href="../reference/patternogram.html">patternogram(
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">14</span>   968 <span style="text-decoration: underline;">856</span>000         0.487</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">15</span>   382 <span style="text-decoration: underline;">919</span>500         0.408</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">p_pr</span><span class="op">)</span></span></code></pre></div>
-<p><img src="an-introduction-to-patternogram_files/figure-html/unnamed-chunk-8-1.png" width="700"></p>
+<p><img src="an-introduction-to-patternogram_files/figure-html/unnamed-chunk-8-1.png" class="r-plt" width="700"></p>
 <p>Both the output tibble and the plot are similar to those for point
 data. <!-- explain --></p>
 <p>In the background, the function randomly samples 500 points from the
@@ -218,8 +221,9 @@ argument – smaller sample sizes will result in faster calculations but
 may be less stable.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">p_pr_np</span> <span class="op">=</span> <span class="fu"><a href="../reference/patternogram.html">patternogram</a></span><span class="op">(</span><span class="va">pr</span>, sample_size <span class="op">=</span> <span class="fl">50</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 50 vectors</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">p_pr_np</span><span class="op">)</span></span></code></pre></div>
-<p><img src="an-introduction-to-patternogram_files/figure-html/unnamed-chunk-9-1.png" width="700"></p>
+<p><img src="an-introduction-to-patternogram_files/figure-html/unnamed-chunk-9-1.png" class="r-plt" width="700"></p>
 <p>By default, the function uses the squared Euclidean distance to
 calculate dissimilarities between points. It means that each point
 values (in this case six values of six raster layers) are compared to
@@ -230,14 +234,21 @@ research question. In the example below, we use the Manhattan
 distance.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">p_pr_dist</span> <span class="op">=</span> <span class="fu"><a href="../reference/patternogram.html">patternogram</a></span><span class="op">(</span><span class="va">pr</span>, dist_fun <span class="op">=</span> <span class="st">"manhattan"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Metric: 'manhattan' with unit: 'log'; comparing: 500 vectors</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">p_pr_dist</span><span class="op">)</span></span></code></pre></div>
-<p><img src="an-introduction-to-patternogram_files/figure-html/unnamed-chunk-10-1.png" width="700"></p>
+<p><img src="an-introduction-to-patternogram_files/figure-html/unnamed-chunk-10-1.png" class="r-plt" width="700"></p>
 <p>Finally, we can calculate and plot patternograms for each raster
 layer separately using the <code>group = TRUE</code> argument.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">p_pr_l</span> <span class="op">=</span> <span class="fu"><a href="../reference/patternogram.html">patternogram</a></span><span class="op">(</span><span class="va">pr</span>, group <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
+<span><span class="co">#&gt; Metric: 'euclidean' with unit: 'log'; comparing: 500 vectors</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">p_pr_l</span><span class="op">)</span></span></code></pre></div>
-<p><img src="an-introduction-to-patternogram_files/figure-html/unnamed-chunk-11-1.png" width="700"></p>
+<p><img src="an-introduction-to-patternogram_files/figure-html/unnamed-chunk-11-1.png" class="r-plt" width="700"></p>
 <p>This allows us to compare the spatial patterns of different variables
 in the raster dataset. <!-- explain --></p>
 </div>
@@ -265,7 +276,7 @@ expanded examples and explanations, see the second vignette: <a href="customizat
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
       </footer>
