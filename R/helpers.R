@@ -67,7 +67,12 @@ create_sample_points_terra = function(x, sample_size, warning){
 calculate_distances = function(x, dist_fun, ...){
   # value dist
   x_df = sf::st_drop_geometry(x)
-  x_vdist = philentropy::distance(x_df, method = dist_fun, mute.message = TRUE, ...)
+
+  if (rlang::is_function(dist_fun)){
+    x_vdist = custom_distance(x_df, dist_fun, ...)
+  } else if (is.character(dist_fun) && dist_fun %in% philentropy::getDistMethods()){
+    x_vdist = philentropy::distance(x_df, method = dist_fun, mute.message = TRUE, ...)
+  }
   rownames(x_vdist) = gsub("v", "", rownames(x_vdist))
   colnames(x_vdist) = gsub("v", "", colnames(x_vdist))
   x_vdist = stats::as.dist(x_vdist)
@@ -87,6 +92,18 @@ calculate_distances = function(x, dist_fun, ...){
   all_dists = dplyr::left_join(x_dist, x_vdist, by = c("item1", "item2"))
   names(all_dists) = c("left", "right", "dist", "dissimilarity")
   return(all_dists)
+}
+
+custom_distance = function(x, dist_fun, ...) {
+  x = as.matrix(x)
+  n = nrow(x)
+  out = matrix(0, n, n)
+  for (i in seq_len(n)) {
+    for (j in seq_len(n)) {
+      out[i, j] = dist_fun(x[i, ], x[j, ], ...)
+    }
+  }
+  out
 }
 
 # summarize_distances = function(x, width, center = NULL, boundary = NULL){
