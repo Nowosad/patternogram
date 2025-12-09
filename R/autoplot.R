@@ -90,6 +90,7 @@ autoplot.patternogram = function(object, point_size = 2, ...) {
 #' @rdname autoplot.patternogram
 #' @export
 #' @method plot patternogram
+#' @importFrom graphics plot
 plot.patternogram = function(x, ...) {
   print(autoplot(x, ...))
 }
